@@ -132,8 +132,11 @@ public class DnsUpdateHelper {
 				+ "</task>" + "</request>";
 	}
 
+	/**
+	 * We need to update all Entries all Time. API is an all or nothing approach.
+	 */
 	private void updateEntries() {
-		for (DnsEntry entry : domain.findNeedsToChanged()) {
+		for (DnsEntry entry : domain.dnsEntries) {
 			entry.actualIp = entry.updatedIp;
 			entry.updated = new Date();
 			Logger.info("did update for " + entry.fullName);
