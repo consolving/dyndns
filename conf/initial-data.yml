@@ -1,0 +1,29 @@
+# Domains
+
+domains:
+
+    - !!models.Domain
+        id:          1
+        name:        example.com
+        hostmaster:  hostmaster@example.com
+        ip:          192.168.0.100
+        code:        1234    
+        
+
+#DNS Entries
+
+dnsEntries:
+
+    - !!models.DnsEntry
+        updatedIp: 192.168.0.101         
+        name:      client1.dyn
+        fullName:  client1.dyn.example.com
+        domain:    !!models.Domain
+                      id:    1
+    - !!models.DnsEntry
+        updatedIp: 192.168.0.102         
+        name:      client2.dyn
+        fullName:  client2.dyn.example.com
+        domain:    !!models.Domain
+                      id:    1                      
+ 
