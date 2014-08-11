@@ -33,13 +33,17 @@ public class Account extends Model {
 
 	public static Account authenticate(String username, String password) {
 		if (FileAuth.validate(username, password)) {
-			return new Account(username);
+			return geAccountOrCreate(username);
 		}
 		return null;
 	}
 
-	public static Account geAccount(String username) {
-		Account account = new Account(username);
+	public static Account geAccountOrCreate(String username) {
+		Account account = Account.find.where().eq("username", username).findUnique();
+		if(account == null){
+			account = new Account(username);
+			account.save();
+		}
 		return account;
 	}
 }

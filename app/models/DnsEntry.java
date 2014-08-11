@@ -65,9 +65,9 @@ public class DnsEntry extends Model {
 		return find.where().eq("name", name).findRowCount() > 0;
 	}
 
-	private final static String generateApiKey() {
+	public final static String generateApiKey() {
 		String part = "" + System.currentTimeMillis();
 		return (UUID.randomUUID().toString().substring(0, 5) + part.substring(
-				0, 5)).toLowerCase();
+				part.length()-5)).toLowerCase();
 	}
 }

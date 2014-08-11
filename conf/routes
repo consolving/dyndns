@@ -5,7 +5,13 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET     /admin                      controllers.Admin.index()
+GET		/domains					controllers.Domains.index()
 GET		/update						controllers.DnsUpdate.update(k: String, ip: String)
+POST	/update						controllers.DnsUpdate.update(k: String, ip: String)
+
+GET		/admin/domains				controllers.Admin.index()
+POST		/admin/domains				controllers.Admin.update()
+POST	/admin/domains/:entryId/apiKey	controllers.Admin.resetApiKey(entryId: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

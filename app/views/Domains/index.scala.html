@@ -1,0 +1,32 @@
+@(entries: List[DnsEntry])
+
+@main("dynDNS") {
+    <div class="hero-unit">
+    <h1>DAD <small>is here</small></h1>
+    </div>
+    
+	<div class="row">
+			<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>API Key</th>
+				<th>actual IP</th>
+				<th>updated IP</th>
+				<th>last Update</th>
+			</tr>
+		</thead>
+		<tbody>
+		@for(entry <- entries) {
+			<tr>
+				<td><a target="_new" href="http://@entry.name">@entry.name</a></td>
+				<td>@entry.apiKey</td>
+				<td>@entry.actualIp</td>
+				<td>@entry.updatedIp</td>
+				<td>@entry.updated</td>
+			</tr>		
+		} 
+		</tbody>
+		</table>
+	</div>
+}
