@@ -1,6 +1,9 @@
 # This is the main configuration file for the application.
 # ~~~~~
 
+app.version = 1.0
+app.name = dyndns
+
 # Secret key
 # ~~~~~
 # The secret key is used to secure cryptographics functions.
@@ -8,7 +11,7 @@
 # This must be changed for production, but we recommend not changing it in this file.
 #
 # See http://www.playframework.com/documentation/latest/ApplicationSecret for more details.
-application.secret="aJ2/@HE/2qNC/pK5IA2O]]xNL0sFHmitopx5`CUao6xqm7ao3<1@^j@^t<DmM]]q"
+application.secret="ABCDEF123456"
 
 # The application languages
 # ~~~~~
@@ -70,7 +73,7 @@ logger.play=INFO
 # Logger provided to your application:
 logger.application=DEBUG
 
-
+# AUTODNS Settings
 autodns.host="https://gateway.autodns.com"
 autodns.user=##youruser##
 autodns.pass=##yourpass##
@@ -80,3 +83,7 @@ autodns.ns1=ns1.example.com
 autodns.ns2=ns2.example.com
 autodns.ns3=ns3.example.com
 autodns.ns4=ns4.example.com
+
+# FileAuth Settings
+authfile.users.path=conf/htusers
+authfile.groups.path=conf/htgroups

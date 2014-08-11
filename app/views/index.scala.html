@@ -1,7 +1,6 @@
 @(entries: List[DnsEntry])
 
 @main("dynDNS") {
-    
     <div class="hero-unit">
     <h1>DAD <small>is here</small></h1>
     </div>
@@ -10,7 +9,8 @@
 		@for(entry <- entries) {
 		<div class="span2">
 			<ul>
-		  		<li>@entry.fullName</li>
+		  		<li>@entry.name</li>
+				<li>@entry.apiKey</li>		  		
 				<li>@entry.updatedIp</li>
 				<li>@entry.actualIp</li>
 				<li>@entry.domain.name</li>				
@@ -18,5 +18,4 @@
 		</div>
 		} 
 	</div>
-    
 }

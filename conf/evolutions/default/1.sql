@@ -17,8 +17,7 @@ create table dns_entry (
   updated_ip                varchar(255),
   actual_ip                 varchar(255),
   name                      varchar(255),
-  full_name                 varchar(255),
-  password                  varchar(255),
+  api_key                   varchar(255),
   account_id                bigint,
   domain_id                 bigint,
   constraint pk_dns_entry primary key (id))

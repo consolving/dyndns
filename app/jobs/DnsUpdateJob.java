@@ -17,7 +17,7 @@ public class DnsUpdateJob implements Runnable {
 
 	@Override
 	public void run() {
-		Logger.info("DnsUpdate has started @" + System.currentTimeMillis());
+		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has started");
 		List<Domain> domains = Domain.find.all();
 		for (Domain domain : domains) {
 			if (domain.findNeedsToChanged().size() > 0) {
@@ -28,7 +28,7 @@ public class DnsUpdateJob implements Runnable {
 			}
 			Logger.info("no update necessary for " + domain.name);
 		}
-		Logger.info("DnsUpdate has ended @" + System.currentTimeMillis());
+		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has ended");
 	}
 
 }

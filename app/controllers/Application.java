@@ -7,10 +7,10 @@ import play.mvc.*;
 import views.html.*;
 
 public class Application extends Controller {
-  
-    public static Result index() {
-    	List<DnsEntry> entries = DnsEntry.find.all();
-        return ok(index.render(entries));
-    }
-  
+
+	public static Result index() {
+		List<DnsEntry> entries = DnsEntry.find.all();
+		return ok(index.render(entries));
+	}
+
 }

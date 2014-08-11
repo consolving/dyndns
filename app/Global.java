@@ -6,6 +6,7 @@ import models.Domain;
 
 import com.avaje.ebean.Ebean;
 
+import fileauth.FileAuthScanJob;
 import jobs.DnsUpdateJob;
 import play.Application;
 import play.GlobalSettings;
@@ -20,11 +21,11 @@ public class Global extends GlobalSettings {
 		Logger.info("Application has started");
 		DnsUpdateJob job = new DnsUpdateJob();
 		Akka.system().scheduler()
-				.schedule(Duration.create(0, TimeUnit.MILLISECONDS), // initial
-																		// delay
-						Duration.create(1, TimeUnit.MINUTES), // run job every 5
-																// minutes
+				.schedule(Duration.create(0, TimeUnit.MILLISECONDS), // initial delay
+						Duration.create(1, TimeUnit.MINUTES), // run job every 1 minutes
 						job, Akka.system().dispatcher());
+		FileAuthScanJob.schedule();
+
 	}
 
 	public void onStop(Application app) {

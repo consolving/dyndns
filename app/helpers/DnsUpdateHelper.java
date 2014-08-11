@@ -139,7 +139,7 @@ public class DnsUpdateHelper {
 		for (DnsEntry entry : domain.dnsEntries) {
 			entry.actualIp = entry.updatedIp;
 			entry.updated = new Date();
-			Logger.info("did update for " + entry.fullName);
+			Logger.info("did update for " + entry.name);
 			entry.save();
 		}
 	}
@@ -161,8 +161,8 @@ public class DnsUpdateHelper {
 
 	private String buildUpdateList() {
 		StringBuilder sb = new StringBuilder();
-		for (DnsEntry entry : domain.findNeedsToChanged()) {
-			sb.append("<rr>").append("<name>").append(entry.fullName)
+		for (DnsEntry entry : domain.dnsEntries) {
+			sb.append("<rr>").append("<name>").append(entry.name)
 					.append("</name>").append("<ttl>300</ttl>")
 					.append("<type>A</type>").append("<value>")
 					.append(entry.updatedIp).append("</value>").append("</rr>");
