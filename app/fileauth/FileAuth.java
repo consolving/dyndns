@@ -93,7 +93,7 @@ public class FileAuth {
 	 */
 	public static boolean contains(String group, String user) {
 		if (!IS_ENABLED) {
-			return true;
+			return false;
 		}
 		if (group == null || user == null) {
 			return false;
@@ -118,7 +118,7 @@ public class FileAuth {
 	 */
 	public static boolean validate(String user, String password) {
 		if (!IS_ENABLED) {
-			return true;
+			return false;
 		}
 		if (user == null || password == null) {
 			return false;
@@ -243,8 +243,8 @@ public class FileAuth {
 		if (ConfigFactory.load().hasPath(key)) {
 			return ConfigFactory.load().getString(key);
 		} else {
-			Logger.info("Config " + key + " not found, using default: '"
-					+ defaultValue + "'");
+			Logger.info("@" + System.currentTimeMillis() + " Config " + key
+					+ " not found, using default: '" + defaultValue + "'");
 			return defaultValue;
 		}
 	}

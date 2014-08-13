@@ -16,7 +16,7 @@ public class Account extends Model {
 
 	public String username;
 
-	@OneToMany(mappedBy = "domain")
+	@OneToMany(mappedBy = "account")
 	public List<DnsEntry> dnsEntries;
 
 	public static Finder<Long, Account> find = new Finder<Long, Account>(
@@ -26,8 +26,13 @@ public class Account extends Model {
 		this.username = username;
 	}
 
+	public boolean isAdmin(){
+		return FileAuth.contains("root", this.username);
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(username);
 		return sb.toString();
 	}
 

@@ -47,7 +47,7 @@ public class DnsUpdateHelper {
 
 	public void update() {
 		String message = getHeader() + buildUpdateList() + getFooter();
-		Logger.debug("sending Update: \n" + message + "\n");
+		Logger.debug("@"+System.currentTimeMillis()+" sending Update: \n" + message + "\n");
 		performUpdate(message);
 	}
 
@@ -136,12 +136,14 @@ public class DnsUpdateHelper {
 	 * We need to update all Entries all Time. API is an all or nothing approach.
 	 */
 	private void updateEntries() {
-		for (DnsEntry entry : domain.dnsEntries) {
+		for (DnsEntry entry : domain.findNeedsToChanged()) {
 			entry.actualIp = entry.updatedIp;
 			entry.updated = new Date();
-			Logger.info("did update for " + entry.name);
+			Logger.info("@"+System.currentTimeMillis()+" did update for " + entry);
 			entry.save();
 		}
+		domain.forceUpdate = false;
+		domain.save();
 	}
 
 	private void performUpdate(String content) {
@@ -151,21 +153,35 @@ public class DnsUpdateHelper {
 					public Document apply(WSResponse response) {
 						Document doc = response.asXml();
 						if (getUpdateStatus(doc)) {
-							Logger.info("success!");
+							Logger.info("@"+System.currentTimeMillis()+" success!");
 							updateEntries();
 						}
 						return doc;
 					}
 				});
 	}
-
+	private static String getCName(String fullName, String domainName){
+		return fullName.replace("."+domainName, "").trim();
+	}
+	
 	private String buildUpdateList() {
 		StringBuilder sb = new StringBuilder();
-		for (DnsEntry entry : domain.dnsEntries) {
-			sb.append("<rr>").append("<name>").append(entry.name)
-					.append("</name>").append("<ttl>300</ttl>")
-					.append("<type>A</type>").append("<value>")
-					.append(entry.updatedIp).append("</value>").append("</rr>");
+		for (DnsEntry entry : domain.findValidEntries()) {
+			if(!entry.toDelete) {
+				sb.append("<rr>")
+				.append("<name>")
+				.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
+				.append("</name>")
+				.append("<ttl>300</ttl>")
+				.append("<type>A</type>")
+				.append("<value>")
+				.append(entry.updatedIp)
+				.append("</value>")
+				.append("</rr>");				
+			} else {
+				entry.delete();
+				Logger.info("@"+System.currentTimeMillis()+" deleting "+entry);
+			}
 		}
 		return sb.toString();
 	}
@@ -180,7 +196,7 @@ public class DnsUpdateHelper {
 			return node != null
 					&& node.getTextContent().toLowerCase().equals("success");
 		} catch (ParserConfigurationException ex) {
-			Logger.warn("could not parse response: %s",
+			Logger.warn("@"+System.currentTimeMillis()+" could not parse response: %s",
 					ex.getLocalizedMessage());
 			return false;
 		}

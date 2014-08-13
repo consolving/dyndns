@@ -12,7 +12,9 @@ import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 
+import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
@@ -22,52 +24,79 @@ public class DnsEntry extends Model {
 	public Long id;
 
 	public Date created = new Date();
-	public Date updated;
+	public Date updated = new Date();
 	public Date changed = new Date();
 
-	public String updatedIp;
-	public String actualIp;
+	public String updatedIp = null;
+	public String actualIp = null;
 
 	@Required
 	public String name;
-	public String apiKey;
+	public String apiKey = generateApiKey();
+
+	public boolean toDelete = false;
 
 	@ManyToOne
 	@Required
 	public Account account;
+
+	@ManyToOne
+	public Domain domain;
+
 	@ManyToOne
 	@Required
-	public Domain domain;
+	public SubDomain subDomain;
 
 	public static Finder<Long, DnsEntry> find = new Finder<Long, DnsEntry>(
 			Long.class, DnsEntry.class);
 
-	public DnsEntry() {
-		this.apiKey = generateApiKey();
-	}
-
-	public DnsEntry(Domain domain, Account account, String name) {
-		this.domain = domain;
-		this.account = account;
-		this.name = name;
-		this.apiKey = generateApiKey();
-	}
-
 	public void update(String ip, String pw) {
-		if (apiKey.equals(pw.trim()) && !this.actualIp.equals(ip)) {
+		if (apiKey.equals(pw.trim())
+				&& (this.actualIp == null || !this.actualIp.equals(ip))) {
 			this.updatedIp = ip;
 			this.changed = new Date();
 			this.save();
 		}
 	}
 
-	public static boolean exists(String name) {
-		return find.where().eq("name", name).findRowCount() > 0;
+	public boolean needsUpdate() {
+		return !toDelete && updatedIp != null && !updatedIp.equals(actualIp);
 	}
 
-	public final static String generateApiKey() {
+	public boolean hasUpdate() {
+		return !toDelete && updatedIp != null && updatedIp.equals(actualIp);
+	}
+
+	public boolean needsSetup() {
+		return !toDelete && updatedIp == null && actualIp == null;
+	}
+
+	public boolean checkName() {
+		SubDomain sd = SubDomain.find.byId(subDomain.id);
+		if (name.trim().endsWith(sd.name)) {
+			name = name.replace("." + sd.name, "").trim();
+		}
+		return name != null;
+	}
+	
+	public String toString() {
+		return name + "." + subDomain.name;
+	}
+
+	public void markToDelete() {
+		toDelete = true;
+		changed = new Date();
+		updatedIp = "";
+	}
+
+	public static boolean exists(DnsEntry entry) {
+		return entry != null && entry.name != null
+				&& find.where().eq("name", entry.name).findRowCount() > 0;
+	}
+
+	public static String generateApiKey() {
 		String part = "" + System.currentTimeMillis();
-		return (UUID.randomUUID().toString().substring(0, 5) + part.substring(
-				part.length()-5)).toLowerCase();
+		return (UUID.randomUUID().toString().substring(0, 5) + part
+				.substring(part.length() - 5)).toLowerCase();
 	}
 }

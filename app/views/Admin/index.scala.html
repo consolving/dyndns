@@ -1,45 +1,63 @@
+@import views.addons._
+@import helper._
 @(entries: List[DnsEntry], accounts: List[Account])
 
-@main("dynDNS") {
-    <div class="hero-unit">
-    <h1>DAD <small>is here</small></h1>
+@main("DYD") {
+<div class="jumbotron">
+    <h1>DYD <small>is here</small></h1>
+</div>
+
+<div class="row">
+    @if(controllers.Application.USER.isAdmin()){
+    <div class="span12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>API Key</th>
+                    <th>updated IP<br />actual IP</th>
+                    <th>Domain<br />SubDomain</th>
+                    <th>last Update</th>				
+                    <th>Account</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(entry <- entries) {
+                <tr>
+                    <td class="word-break">@entry</td>
+                    <td>
+                        <form method="post" action="@routes.AdminDynDNS.resetApiKey(entry.id)">
+                            @entry.apiKey
+                            <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-repeat"></span></button></form>
+                        </form>
+                    </td>
+                    <td>@entry.updatedIp<br />@entry.actualIp</td>
+                    <td>@entry.domain<br /><em>@entry.subDomain</em></td>	
+                    <td>@entry.updated.since()</td>			
+                    <td>
+                    @form(routes.AdminDynDNS.update(entry.id)) {
+                    	<input type="hidden" name="name" id="name" value="@entry.name" />
+                    	<input type="hidden" name="domain.id" id="domain_id" value="@entry.domain.id" />
+                    	<input type="hidden" name="subDomain.id" id="subDomain_id" value="@entry.subDomain.id" />
+                        <select class="form-control" name="account.id" id="account_id">
+                            @for(account <- accounts) {
+                            <option  @if(account.id == entry.account.id){ selected="selected"} value="@account.id">@account.username</option>
+                            }
+                        </select>
+                        <button class="btn btn-primary">Update</button>
+                	} 
+                    </td>
+                    <td>
+                    @form(routes.AdminDynDNS.delete(entry.id)) {
+                    	<button class="btn btn-danger" type="submit">Delete</button>
+                    }
+                    </td>
+                </tr>
+                }
+            </tbody> 
+        </table>
     </div>
-    
-	<div class="row">
-		<table class="table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>API Key</th>
-				<th></th>
-				<th>IP</th>
-				<th>Account</th>
-			</tr>
-		</thead>
-		<tbody>
-		@for(entry <- entries) {
-		<tr>
-			<td>@entry.name</td>
-			<td>@entry.apiKey</td>
-			<td>
-			<form method="post" action="@routes.Admin.resetApiKey(entry.id)">
-			<button class="btn btn-primary"><i class="icon-refresh" alt="reset"></i> Reset</button></form>
-			</form>
-			</td>
-			<td>@entry.updatedIp<br />@entry.actualIp</td>	
-			<td>
-				<form method="post" action="@routes.Admin.update()">
-					<input name="entry.id" value="@entry.id" type="hidden" />
-					<select name="entry.account">
-					@for(account <- accounts) {
-						<option  @if(account == entry.account){ selecte="selected"} value="@account.id">@account.username</option>
-					}
-					</select>
-					<button class="btn btn-primary">Save</button></form>
-			</td>
-		</tr>
-		}
-		</tbody> 
-		</table>
-	</div>
+    }
+</div>
 }

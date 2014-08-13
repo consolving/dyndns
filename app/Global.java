@@ -18,7 +18,7 @@ import scala.concurrent.duration.Duration;
 public class Global extends GlobalSettings {
 	public void onStart(Application app) {
 		InitialData.insert(app);
-		Logger.info("Application has started");
+		Logger.info("@"+System.currentTimeMillis()+" Application has started");
 		DnsUpdateJob job = new DnsUpdateJob();
 		Akka.system().scheduler()
 				.schedule(Duration.create(0, TimeUnit.MILLISECONDS), // initial delay
@@ -29,19 +29,25 @@ public class Global extends GlobalSettings {
 	}
 
 	public void onStop(Application app) {
-		Logger.info("Application shutdown...");
+		Logger.info("@"+System.currentTimeMillis()+" Application shutdown...");
 	}
 
 	static class InitialData {
 		public static void insert(Application app) {
+			Logger.info("@"+System.currentTimeMillis()+" InitialData...");
 			if (Ebean.find(Domain.class).findRowCount() == 0) {
 				Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml
 						.load("initial-data.yml");
 				// Insert domains first
 				Ebean.save(all.get("domains"));
+				// Insert subdomains then
+				Ebean.save(all.get("subdomains"));
+				// Insert accounts then
+				Ebean.save(all.get("accounts"));
 				// Insert domain entries then
 				Ebean.save(all.get("dnsEntries"));
 			}
+			Logger.info("@"+System.currentTimeMillis()+" InitialData done.");
 		}
 	}
 }

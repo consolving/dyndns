@@ -4,6 +4,7 @@ import com.ning.http.util.Base64;
 import com.typesafe.config.ConfigFactory;
 
 import models.Account;
+import play.Logger;
 import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Http;
@@ -17,6 +18,7 @@ public class BasicAuthAction extends Action<Object> {
 	private static final String REALM = getRealm();
 
 	public F.Promise<Result> call(Http.Context context) throws Throwable {
+		
 		String authHeader = context.request().getHeader(AUTHORIZATION);
 		if (authHeader == null) {
 			return sendAuthRequest(context);

@@ -12,7 +12,7 @@ import play.Logger;
 public class DnsUpdateJob implements Runnable {
 
 	public DnsUpdateJob() {
-		Logger.info("DnsUpdate scheduled");
+		Logger.info("@"+System.currentTimeMillis()+" DnsUpdate scheduled");
 	}
 
 	@Override
@@ -20,13 +20,13 @@ public class DnsUpdateJob implements Runnable {
 		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has started");
 		List<Domain> domains = Domain.find.all();
 		for (Domain domain : domains) {
-			if (domain.findNeedsToChanged().size() > 0) {
-				Logger.info("domain " + domain.name + " updating "
+			if (domain.findNeedsToChanged().size() > 0 || domain.forceUpdate) {
+				Logger.info("@"+System.currentTimeMillis()+" updating domain " + domain.name+" "
 						+ domain.findNeedsToChanged().size() + "/"
 						+ domain.dnsEntries.size());
 				new DnsUpdateHelper(domain).update();
 			}
-			Logger.info("no update necessary for " + domain.name);
+			Logger.info("@"+System.currentTimeMillis()+" no update necessary for " + domain.name);
 		}
 		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has ended");
 	}

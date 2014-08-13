@@ -1,0 +1,66 @@
+@import views.addons._
+@import helper._
+
+@(entries: List[DnsEntry], entryForm: Form[DnsEntry])
+
+@main("DYD") {
+<div class="row">
+	<div class="jumbotron col-md-9">
+    	<h1><small>@entries.size()</small> Hosts</h1>
+	</div>
+    <div class="col-md-3">
+		@form(routes.Domains.save()) {
+            <input type="hidden" name="account.id" id="account_id" value="@controllers.Application.USER.id" />                       
+            @inputText(
+                entryForm("name"), 
+                '_label -> "CNAME", 
+                'class -> "form-control", 
+                'placeholder -> "CNAME.domain.com"
+            )
+            @select(
+                entryForm("subDomain.id"), 
+                options(SubDomain.optionsFor(controllers.Application.USER)), 
+                '_label -> "Domain" , 
+                'class -> "form-control"
+            )      
+            <input type="submit" class="btn btn-primary" value="Create" />
+        }    
+    </div>
+    
+
+    <div class="col-md-12">
+    <!-- TODO move to repsonsive divs -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-md-2">Name<br />CName</th>
+                    <th class="col-md-1">API Key</th>
+                    <th class="col-md-1">updated IP<br />actual IP</th>
+                    <th class="col-md-2">last Update</th>
+                    <th class="col-md-4">Update-URL</th>
+                    <th class="col-md-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(entry <- entries) {
+                <tr>
+                    <td class="word-break"><a target="_new" href="http://@entry">http://@entry</a><br />@entry.name</td>
+                    <td>@entry.apiKey</td>
+                    <td> @entry.updatedIp<br />@entry.actualIp</td>
+                    <td>@entry.updated.since()</td>
+                    <td>
+                        <code>@routes.DnsUpdate.update(entry.apiKey).absoluteURL(request)</code>
+                        <a target="_new" href="@routes.DnsUpdate.update(entry.apiKey)"><span class="glyphicon glyphicon-new-window"></span></a>
+                        <br />using remote IP, ?ip=&lt;your-ip&gt;
+                    </td>
+                    <td>
+                   
+                    @form(routes.Domains.delete(entry.id)) { <a href="#" class="btn btn-default">Edit</a><button class="btn btn-danger" type="submit">Delete</button>}
+                    </td>
+                </tr>		
+                } 
+            </tbody>
+        </table>
+    </div>
+</div>
+}

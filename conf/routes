@@ -3,15 +3,21 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-GET     /admin                      controllers.Admin.index()
-GET		/domains					controllers.Domains.index()
-GET		/update						controllers.DnsUpdate.update(k: String, ip: String)
-POST	/update						controllers.DnsUpdate.update(k: String, ip: String)
+GET     /                               controllers.Application.index()
+GET		/dyndns						    controllers.Domains.index()
+POST	/dyndns/:id/delete				controllers.Domains.delete(id: Long)
+POST	/dyndns					        controllers.Domains.save()
+GET		/update/:k					    controllers.DnsUpdate.update(k: String)
+POST	/update/:k					    controllers.DnsUpdate.update(k: String)
+GET		/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
+POST	/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
 
-GET		/admin/domains				controllers.Admin.index()
-POST		/admin/domains				controllers.Admin.update()
-POST	/admin/domains/:entryId/apiKey	controllers.Admin.resetApiKey(entryId: Long)
+
+
+GET		/admin/dyndns				    controllers.AdminDynDNS.index()
+POST	/admin/dyndns/:id				controllers.AdminDynDNS.update(id: Long)
+POST	/admin/dyndns/:id/apiKey		controllers.AdminDynDNS.resetApiKey(id: Long)
+POST	/admin/dyndns/:id/delete		controllers.AdminDynDNS.delete(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                   controllers.Assets.at(path="/public", file)
