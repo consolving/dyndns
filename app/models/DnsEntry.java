@@ -9,6 +9,7 @@ package models;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,8 +36,8 @@ public class DnsEntry extends Model {
 	@Required
 	public String name;
 	public String apiKey = generateApiKey();
-
-	public boolean toDelete = false;
+	@Column(columnDefinition = " tinyint(1) DEFAULT '0'")
+	public Boolean toDelete = false;
 
 	@ManyToOne
 	@Required

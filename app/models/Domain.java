@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,8 +28,8 @@ public class Domain extends Model {
 	public String ip;
 
 	public String code;
-
-	public boolean forceUpdate = false;
+	@Column(columnDefinition = " tinyint(1) DEFAULT '0'")
+	public Boolean forceUpdate = false;
 
 	@OneToMany(mappedBy = "domain")
 	public List<DnsEntry> dnsEntries;
