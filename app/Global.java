@@ -21,7 +21,7 @@ public class Global extends GlobalSettings {
 		Logger.info("@"+System.currentTimeMillis()+" Application has started");
 		DnsUpdateJob job = new DnsUpdateJob();
 		Akka.system().scheduler()
-				.schedule(Duration.create(0, TimeUnit.MILLISECONDS), // initial delay
+				.schedule(Duration.create(500, TimeUnit.MILLISECONDS), // initial delay
 						Duration.create(1, TimeUnit.MINUTES), // run job every 1 minutes
 						job, Akka.system().dispatcher());
 		FileAuthScanJob.schedule();
