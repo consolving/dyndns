@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -13,7 +15,9 @@ import play.db.ebean.Model;
 
 @Entity
 public class Domain extends Model {
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
 	public String name;
@@ -25,21 +29,19 @@ public class Domain extends Model {
 	public String code;
 
 	public boolean forceUpdate = false;
-	
+
 	@OneToMany(mappedBy = "domain")
 	public List<DnsEntry> dnsEntries;
 
-	public static Finder<Long, Domain> find = new Finder<Long, Domain>(
-			Long.class, Domain.class);
+	public static Finder<Long, Domain> find = new Finder<Long, Domain>(Long.class, Domain.class);
 
 	public Set<DnsEntry> findNeedsToChanged() {
-		return DnsEntry.find.where().isNotNull("updatedIp")
-				.raw("updatedIp IS NOT actualIp").eq("domain", this).findSet();
+		return DnsEntry.find.where().isNotNull("updatedIp").raw("updatedIp IS NOT actualIp").eq("domain", this)
+				.findSet();
 	}
 
 	public Set<DnsEntry> findValidEntries() {
-		return DnsEntry.find.where().isNotNull("updatedIp").eq("domain", this)
-				.findSet();
+		return DnsEntry.find.where().isNotNull("updatedIp").eq("domain", this).findSet();
 	}
 
 	public String toString() {

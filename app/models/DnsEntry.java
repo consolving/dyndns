@@ -10,17 +10,19 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 
-import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 @Entity
 public class DnsEntry extends Model {
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
 	public Date created = new Date();
@@ -47,12 +49,10 @@ public class DnsEntry extends Model {
 	@Required
 	public SubDomain subDomain;
 
-	public static Finder<Long, DnsEntry> find = new Finder<Long, DnsEntry>(
-			Long.class, DnsEntry.class);
+	public static Finder<Long, DnsEntry> find = new Finder<Long, DnsEntry>(Long.class, DnsEntry.class);
 
 	public void update(String ip, String pw) {
-		if (apiKey.equals(pw.trim())
-				&& (this.actualIp == null || !this.actualIp.equals(ip))) {
+		if (apiKey.equals(pw.trim()) && (this.actualIp == null || !this.actualIp.equals(ip))) {
 			this.updatedIp = ip;
 			this.changed = new Date();
 			this.save();
@@ -78,7 +78,7 @@ public class DnsEntry extends Model {
 		}
 		return name != null;
 	}
-	
+
 	public String toString() {
 		return name + "." + subDomain.name;
 	}
@@ -90,13 +90,11 @@ public class DnsEntry extends Model {
 	}
 
 	public static boolean exists(DnsEntry entry) {
-		return entry != null && entry.name != null
-				&& find.where().eq("name", entry.name).findRowCount() > 0;
+		return entry != null && entry.name != null && find.where().eq("name", entry.name).findRowCount() > 0;
 	}
 
 	public static String generateApiKey() {
 		String part = "" + System.currentTimeMillis();
-		return (UUID.randomUUID().toString().substring(0, 5) + part
-				.substring(part.length() - 5)).toLowerCase();
+		return (UUID.randomUUID().toString().substring(0, 5) + part.substring(part.length() - 5)).toLowerCase();
 	}
 }

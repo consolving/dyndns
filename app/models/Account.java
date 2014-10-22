@@ -3,6 +3,8 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -11,7 +13,9 @@ import play.db.ebean.Model;
 
 @Entity
 public class Account extends Model {
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
 	public String username;
@@ -19,17 +23,16 @@ public class Account extends Model {
 	@OneToMany(mappedBy = "account")
 	public List<DnsEntry> dnsEntries;
 
-	public static Finder<Long, Account> find = new Finder<Long, Account>(
-			Long.class, Account.class);
+	public static Finder<Long, Account> find = new Finder<Long, Account>(Long.class, Account.class);
 
 	public Account(String username) {
 		this.username = username;
 	}
 
-	public boolean isAdmin(){
+	public boolean isAdmin() {
 		return FileAuth.contains("root", this.username);
 	}
-	
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(username);
@@ -45,7 +48,7 @@ public class Account extends Model {
 
 	public static Account geAccountOrCreate(String username) {
 		Account account = Account.find.where().eq("username", username).findUnique();
-		if(account == null){
+		if (account == null) {
 			account = new Account(username);
 			account.save();
 		}
