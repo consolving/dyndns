@@ -36,7 +36,6 @@ public class DnsEntry extends Model {
 	@Required
 	public String name;
 	public String apiKey = generateApiKey();
-	@Column(columnDefinition = " tinyint(1) DEFAULT '0'")
 	public Boolean toDelete = false;
 
 	@ManyToOne

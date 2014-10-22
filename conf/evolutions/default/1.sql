@@ -18,7 +18,7 @@ create table dns_entry (
   actual_ip                 varchar(255),
   name                      varchar(255),
   api_key                   varchar(255),
-  to_delete                  tinyint(1) DEFAULT '0',
+  to_delete                 boolean,
   account_id                bigint,
   domain_id                 bigint,
   sub_domain_id             bigint,
@@ -31,7 +31,7 @@ create table domain (
   hostmaster                varchar(255),
   ip                        varchar(255),
   code                      varchar(255),
-  force_update               tinyint(1) DEFAULT '0',
+  force_update              boolean,
   constraint pk_domain primary key (id))
 ;
 

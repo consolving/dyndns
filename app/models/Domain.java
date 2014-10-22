@@ -28,7 +28,6 @@ public class Domain extends Model {
 	public String ip;
 
 	public String code;
-	@Column(columnDefinition = " tinyint(1) DEFAULT '0'")
 	public Boolean forceUpdate = false;
 
 	@OneToMany(mappedBy = "domain")
