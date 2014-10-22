@@ -34,15 +34,19 @@ public class Global extends GlobalSettings {
 
 	static class InitialData {
 		public static void insert(Application app) {
-			Logger.info("@"+System.currentTimeMillis()+" InitialData...");
-			if (Ebean.find(Domain.class).findRowCount() == 0) {
-				Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml.load("initial-data.yml");
-				// Insert domains first
-				Ebean.save(all.get("domains"));
-				// Insert subdomains then
-				Ebean.save(all.get("subdomains"));
+			try {
+				Logger.info("@"+System.currentTimeMillis()+" InitialData...");
+				if (Ebean.find(Domain.class).findRowCount() == 0) {
+					Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml.load("initial-data.yml");
+					// Insert domains first
+					Ebean.save(all.get("domains"));
+					// Insert subdomains then
+					Ebean.save(all.get("subdomains"));
+				}
+				Logger.info("@"+System.currentTimeMillis()+" InitialData done.");		
+			} catch(org.yaml.snakeyaml.error.YAMLException ex) {
+				Logger.warn(ex.getLocalizedMessage(), ex);
 			}
-			Logger.info("@"+System.currentTimeMillis()+" InitialData done.");
 		}
 	}
 }
