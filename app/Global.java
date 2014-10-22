@@ -36,16 +36,11 @@ public class Global extends GlobalSettings {
 		public static void insert(Application app) {
 			Logger.info("@"+System.currentTimeMillis()+" InitialData...");
 			if (Ebean.find(Domain.class).findRowCount() == 0) {
-				Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml
-						.load("initial-data.yml");
+				Map<String, List<Object>> all = (Map<String, List<Object>>) Yaml.load("initial-data.yml");
 				// Insert domains first
 				Ebean.save(all.get("domains"));
 				// Insert subdomains then
 				Ebean.save(all.get("subdomains"));
-				// Insert accounts then
-				Ebean.save(all.get("accounts"));
-				// Insert domain entries then
-				Ebean.save(all.get("dnsEntries"));
 			}
 			Logger.info("@"+System.currentTimeMillis()+" InitialData done.");
 		}
