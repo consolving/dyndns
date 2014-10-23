@@ -1,20 +1,17 @@
 package controllers;
 
+import static play.data.Form.form;
+
 import java.util.List;
 
-import fileauth.actions.BasicAuth;
 import models.Account;
 import models.DnsEntry;
 import models.Domain;
 import models.SubDomain;
-import play.Logger;
-import static play.data.Form.*;
-import play.data.DynamicForm;
 import play.data.Form;
-import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.dyndns.*;
+import views.html.dyndns.index;
+import fileauth.actions.BasicAuth;
 
 @BasicAuth
 public class Domains extends Application {

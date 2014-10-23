@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import com.typesafe.config.ConfigFactory;
+
 import fileauth.actions.BasicAuth;
 import models.Account;
 import models.DnsEntry;
@@ -10,6 +12,10 @@ import views.html.Application.*;
 
 @BasicAuth
 public class Application extends Controller {
+	
+	
+	public final static boolean REQUEST_SECURE = getRequestSecure();
+			
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());
 		List<DnsEntry> entries = account.dnsEntries;
@@ -25,5 +31,12 @@ public class Application extends Controller {
 			account = Account.NO_ACCOUNT;
 		}
 		return account;
+	}
+
+	private static Boolean getRequestSecure() {
+		if(ConfigFactory.load().hasPath("request.secure")){
+			return Boolean.parseBoolean(ConfigFactory.load().getString("request.secure"));
+		}
+		return false;
 	}
 }
