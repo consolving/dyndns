@@ -26,10 +26,7 @@ public class Global extends GlobalSettings {
 	public void onStop(Application app) {
 		Logger.info("@" + System.currentTimeMillis() + " Application shutdown...");
 	}
-	public Action onRequest(Http.Request request, java.lang.reflect.Method actionMethod) {
-		
-		return super.onRequest(request, actionMethod);
-	}
+
 	static class InitialData {
 		public static void insert(Application app) {
 			try {
