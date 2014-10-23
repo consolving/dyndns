@@ -41,6 +41,11 @@ public class DnsUpdateHelper {
 			"autodns.ns4");
 	private Domain domain;
 
+	// TODO make ttl configurable
+	private final static int SUBDOMAIN_TTL = 60;
+	private final static int DOMAIN_TTL = 3600;	
+	private final static int NS_TTL = 86400;	
+	
 	public DnsUpdateHelper(Domain domain) {
 		this.domain = domain;
 	}
@@ -51,7 +56,7 @@ public class DnsUpdateHelper {
 		performUpdate(message);
 	}
 
-	// TODO make ttl configurable
+	
 	// TODO move string to template
 	private String getHeader() {
 		return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
@@ -81,7 +86,7 @@ public class DnsUpdateHelper {
 				+ "<value>"
 				+ domain.ip
 				+ "</value>"
-				+ "<ttl>3600</ttl>"
+				+ "<ttl>"+DOMAIN_TTL+"</ttl>"
 				+ "</main>"
 				+ "<www_include>1</www_include>"
 				+ "<soa>"
@@ -97,31 +102,31 @@ public class DnsUpdateHelper {
 				+ "<name>"
 				+ AUTODNS_NS_1
 				+ "</name>"
-				+ "<ttl>86400</ttl>"
+				+ "<ttl>"+NS_TTL+"</ttl>"
 				+ "</nserver>"
 				+ "<nserver>"
 				+ "<name>"
 				+ AUTODNS_NS_2
 				+ "</name>"
-				+ "<ttl>86400</ttl>"
+				+ "<ttl>"+NS_TTL+"</ttl>"
 				+ "</nserver>"
 				+ "<nserver>"
 				+ "<name>"
 				+ AUTODNS_NS_3
 				+ "</name>"
-				+ "<ttl>86400</ttl>"
+				+ "<ttl>"+NS_TTL+"</ttl>"
 				+ "</nserver>"
 				+ "<nserver>"
 				+ "<name>"
 				+ AUTODNS_NS_4
 				+ "</name>"
-				+ "<ttl>86400</ttl>"
+				+ "<ttl>"+NS_TTL+"</ttl>"
 				+ "</nserver>"
 				+ "<allow_transfer_from/>"
 				+ "<free/>"
 				+ "<rr>"
 				+ "<name>*</name>"
-				+ "<ttl>600</ttl>"
+				+ "<ttl>"+SUBDOMAIN_TTL+"</ttl>"
 				+ "<type>A</type>"
 				+ "<value>" + domain.ip + "</value>" + "</rr>";
 	}
@@ -172,7 +177,7 @@ public class DnsUpdateHelper {
 				.append("<name>")
 				.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
 				.append("</name>")
-				.append("<ttl>300</ttl>")
+				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")
 				.append("<type>A</type>")
 				.append("<value>")
 				.append(entry.updatedIp)
