@@ -10,8 +10,6 @@ import views.html.Application.*;
 
 @BasicAuth
 public class Application extends Controller {
-	public final static Account USER = Account.geAccountOrCreate(request()
-			.username());
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());
 		List<DnsEntry> entries = account.dnsEntries;
@@ -19,5 +17,13 @@ public class Application extends Controller {
 			entries = DnsEntry.find.all();
 		}
 		return ok(index.render(entries));
+	}
+
+	public static Account getAccount() {
+		Account account = Account.geAccountOrCreate(request().username());
+		if(account == null){
+			account = Account.NO_ACCOUNT;
+		}
+		return account;
 	}
 }

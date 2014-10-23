@@ -19,8 +19,7 @@ public class DnsUpdate extends Controller {
 		DnsEntry entry = DnsEntry.find.where().eq("apiKey", k.trim())
 				.findUnique();
 		if (ip == null) {
-			ip = request().getQueryString("ip") != null ? request()
-					.getQueryString("ip") : request().remoteAddress();
+			ip = request().getQueryString("ip") != null ? request().getQueryString("ip") : request().remoteAddress();
 		}
 
 		if (entry != null) {

@@ -14,6 +14,7 @@ import play.db.ebean.Model;
 @Entity
 public class Account extends Model {
 
+	public final static Account NO_ACCOUNT = new Account("guest");
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;

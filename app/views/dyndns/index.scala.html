@@ -10,7 +10,7 @@
 	</div>
     <div class="col-md-3">
 		@form(routes.Domains.save()) {
-            <input type="hidden" name="account.id" id="account_id" value="@controllers.Application.USER.id" />                       
+            <input type="hidden" name="account.id" id="account_id" value="@controllers.Application.getAccount().id" />                       
             @inputText(
                 entryForm("name"), 
                 '_label -> "CNAME", 
@@ -19,7 +19,7 @@
             )
             @select(
                 entryForm("subDomain.id"), 
-                options(SubDomain.optionsFor(controllers.Application.USER)), 
+                options(SubDomain.optionsFor(controllers.Application.getAccount())), 
                 '_label -> "Domain" , 
                 'class -> "form-control"
             )      

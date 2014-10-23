@@ -55,6 +55,7 @@ public class DnsEntry extends Model {
 		if (apiKey.equals(pw.trim()) && (this.actualIp == null || !this.actualIp.equals(ip))) {
 			this.updatedIp = ip;
 			this.changed = new Date();
+			this.updated = null;
 			this.save();
 		}
 	}

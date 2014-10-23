@@ -8,7 +8,7 @@
 </div>
 
 <div class="row">
-    @if(controllers.Application.USER.isAdmin()){
+    @if(controllers.Application.getAccount().isAdmin()){
     <div class="span12">
         <table class="table">
             <thead>

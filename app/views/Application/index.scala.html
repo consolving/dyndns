@@ -25,7 +25,7 @@
                     @entry
                     <small>
                         <br />
-                        @if(controllers.Application.USER.isAdmin()){
+                        @if(controllers.Application.getAccount().isAdmin()){
                         @entry.account | 
                         }
                         @if(entry.hasUpdate()){

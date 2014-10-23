@@ -36,7 +36,7 @@ public class Domain extends Model {
 	public static Finder<Long, Domain> find = new Finder<Long, Domain>(Long.class, Domain.class);
 
 	public Set<DnsEntry> findNeedsToChanged() {
-		return DnsEntry.find.where().isNotNull("updatedIp").raw("actualIp IS NULL OR updatedIp IS NOT actualIp").eq("domain", this)
+		return DnsEntry.find.where().isNotNull("updatedIp").isNull("updated").eq("domain", this)
 				.findSet();
 	}
 
