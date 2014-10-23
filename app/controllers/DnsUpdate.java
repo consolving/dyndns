@@ -6,10 +6,7 @@
  */
 package controllers;
 
-import java.util.Map;
-
 import models.DnsEntry;
-import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 

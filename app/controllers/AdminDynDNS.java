@@ -31,6 +31,7 @@ public class AdminDynDNS extends Application {
 		}
 		Form<DnsEntry> entryForm = Form.form(DnsEntry.class).bindFromRequest();
 		DnsEntry entry = entryForm.get();
+		entry.updated = null;
 		entry.update(id);
 		return redirect(routes.AdminDynDNS.index());
 	}
