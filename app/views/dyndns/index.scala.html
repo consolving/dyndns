@@ -44,7 +44,7 @@
             <tbody>
                 @for(entry <- entries) {
                 <tr>
-                    <td class="word-break"><a target="_new" href="@entry">@entry</a><br />@entry.name</td>
+                    <td class="word-break">@entry<br />@entry.name</td>
                     <td>@entry.apiKey</td>
                     <td> @entry.updatedIp<br />@entry.actualIp</td>
                     <td>@entry.updated.since()</td>
