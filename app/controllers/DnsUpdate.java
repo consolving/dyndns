@@ -7,6 +7,9 @@
 package controllers;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import models.DnsEntry;
 import play.Logger;
 import play.mvc.Controller;
@@ -14,22 +17,19 @@ import play.mvc.Result;
 
 public class DnsUpdate extends Controller {
 
-	// TODO move to config
-	private final static String LOCAL_NET = "10.10.10";
+	private static final Pattern PATTERN = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 	public static Result updateIp(String k, String ip) {
 		DnsEntry entry = DnsEntry.find.where().eq("apiKey", k.trim())
 				.findUnique();
 		if (ip == null) {
 			ip = getIp();
 		}
-
-		if(ip.startsWith(LOCAL_NET)){
-			return status(METHOD_NOT_ALLOWED, "won't update with local IPs");
-		}
-		if (entry != null) {
+		
+		if (validate(ip) && entry != null) {
 			entry.update(ip, k);
 			return ok("will update "+entry.toString()+" to " + ip);
 		}
+		
 		return badRequest();
 	}
 
@@ -37,12 +37,21 @@ public class DnsUpdate extends Controller {
 		return updateIp(k, null);
 	}
 
+	private static boolean validate(final String ip) {
+	      Matcher matcher = PATTERN.matcher(ip);
+	      return matcher.matches();             
+	}
+	
 	private static String getIp() {
+		
 		StringBuilder sb = new StringBuilder();
 		for(String key : request().headers().keySet()){
 			sb.append(key).append(" = ").append(request().getHeader(key)).append("\n");
 		}
 		Logger.info("headers:\n "+sb.toString());
-		return request().getQueryString("ip") != null ? request().getQueryString("ip") : request().remoteAddress();
+		String ip = request().getQueryString("ip") != null ? 
+				request().getQueryString("ip") : request().getHeader("X-Forwarded-For") != null ? 
+						request().getHeader("X-Forwarded-For") : request().remoteAddress();
+		return ip;
 	}
 }
