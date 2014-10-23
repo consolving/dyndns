@@ -31,7 +31,10 @@ public class AdminDynDNS extends Application {
 		}
 		Form<DnsEntry> entryForm = Form.form(DnsEntry.class).bindFromRequest();
 		DnsEntry entry = entryForm.get();
+		DnsEntry oldEntry = DnsEntry.find.byId(id);
 		entry.updated = null;
+		// FIXME work around for resetting APIKey Bug....
+		entry.apiKey = oldEntry.apiKey;
 		entry.update(id);
 		return redirect(routes.AdminDynDNS.index());
 	}
