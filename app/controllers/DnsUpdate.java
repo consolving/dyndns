@@ -45,10 +45,12 @@ public class DnsUpdate extends Controller {
 	private static String getIp() {
 		
 		StringBuilder sb = new StringBuilder();
-		for(String key : request().headers().keySet()){
-			sb.append(key).append(" = ").append(request().getHeader(key)).append("\n");
+		for(String key : request().headers().keySet()) {
+			if(!key.equals("Authorization")) {
+				sb.append(key).append(" = ").append(request().getHeader(key)).append("\n");				
+			}
 		}
-		Logger.info("headers:\n "+sb.toString());
+		Logger.info("headers:\n"+sb.toString());
 		String ip = request().getQueryString("ip") != null ? 
 				request().getQueryString("ip") : request().getHeader("X-Forwarded-For") != null ? 
 						request().getHeader("X-Forwarded-For") : request().remoteAddress();
