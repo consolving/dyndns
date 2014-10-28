@@ -19,18 +19,21 @@ public class DnsUpdate extends Controller {
 
 	private static final Pattern PATTERN = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 	public static Result updateIp(String k, String ip) {
-		DnsEntry entry = DnsEntry.find.where().eq("apiKey", k.trim())
-				.findUnique();
+		DnsEntry entry = DnsEntry.find.where().eq("apiKey", k.trim()).findUnique();
 		if (ip == null) {
 			ip = getIp();
 		}
 		
 		if (validate(ip) && entry != null) {
 			entry.update(ip, k);
-			return ok("will update "+entry.toString()+" to " + ip);
+			if(entry.actualIp.equals(ip)) {
+				return ok("nochg " + ip);
+			} else {
+				return ok("good " + ip);				
+			}
 		}
 		
-		return badRequest();
+		return badRequest("nohost");
 	}
 
 	public static Result update(String k) {
