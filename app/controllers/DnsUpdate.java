@@ -26,7 +26,7 @@ public class DnsUpdate extends Controller {
 		
 		if (validate(ip) && entry != null) {
 			entry.update(ip, k);
-			if(entry.actualIp.equals(ip)) {
+			if(entry.actualIp != null && entry.actualIp.equals(ip)) {
 				return ok("nochg " + ip);
 			} else {
 				return ok("good " + ip);				
