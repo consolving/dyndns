@@ -16,10 +16,11 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class DnsUpdate extends Controller {
-
+	private static final String USER_AGENT = "User-Agent";
 	private static final Pattern PATTERN = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 	public static Result updateIp(String k, String ip) {
 		DnsEntry entry = DnsEntry.find.where().eq("apiKey", k.trim()).findUnique();
+		Logger.info("update for "+entry+" by "+ getAgent());
 		if (ip == null) {
 			ip = getIp();
 		}
@@ -45,8 +46,11 @@ public class DnsUpdate extends Controller {
 	      return matcher.matches();             
 	}
 	
+	private static String getAgent() {
+		return request().hasHeader(USER_AGENT) ? request().getHeader(USER_AGENT) : "N/A";
+	}
+	
 	private static String getIp() {
-		
 		StringBuilder sb = new StringBuilder();
 		for(String key : request().headers().keySet()) {
 			if(!key.equals("Authorization")) {
