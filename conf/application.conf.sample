@@ -84,6 +84,10 @@ autodns.ns2=ns2.example.com
 autodns.ns3=ns3.example.com
 autodns.ns4=ns4.example.com
 
+autodns.subdomain.ttl=60
+autodns.domain.ttl=300
+autodns.nameserver.ttl=600
+
 # FileAuth Settings
 authfile.users.path=conf/htusers
 authfile.groups.path=conf/htgroups

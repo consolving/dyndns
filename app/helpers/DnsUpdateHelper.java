@@ -23,28 +23,19 @@ import models.Domain;
 
 public class DnsUpdateHelper {
 
-	private final static String AUTODNS_HOST = ConfigFactory.load().getString(
-			"autodns.host");
-	private final static String AUTODNS_USERNAME = ConfigFactory.load()
-			.getString("autodns.user");
-	private final static String AUTODNS_PASSWORD = ConfigFactory.load()
-			.getString("autodns.pass");
-	private final static String AUTODNS_CONTEXT = ConfigFactory.load()
-			.getString("autodns.context");
-	private final static String AUTODNS_NS_1 = ConfigFactory.load().getString(
-			"autodns.ns1");
-	private final static String AUTODNS_NS_2 = ConfigFactory.load().getString(
-			"autodns.ns2");
-	private final static String AUTODNS_NS_3 = ConfigFactory.load().getString(
-			"autodns.ns3");
-	private final static String AUTODNS_NS_4 = ConfigFactory.load().getString(
-			"autodns.ns4");
+	private final static String AUTODNS_HOST = ConfigFactory.load().getString("autodns.host");
+	private final static String AUTODNS_USERNAME = ConfigFactory.load().getString("autodns.user");
+	private final static String AUTODNS_PASSWORD = ConfigFactory.load().getString("autodns.pass");
+	private final static String AUTODNS_CONTEXT = ConfigFactory.load().getString("autodns.context");
+	private final static String AUTODNS_NS_1 = ConfigFactory.load().getString("autodns.ns1");
+	private final static String AUTODNS_NS_2 = ConfigFactory.load().getString("autodns.ns2");
+	private final static String AUTODNS_NS_3 = ConfigFactory.load().getString("autodns.ns3");
+	private final static String AUTODNS_NS_4 = ConfigFactory.load().getString("autodns.ns4");
 	private Domain domain;
 
-	// TODO make ttl configurable
-	private final static int SUBDOMAIN_TTL = 60;
-	private final static int DOMAIN_TTL = 3600;	
-	private final static int NS_TTL = 86400;	
+	private final static int SUBDOMAIN_TTL = parseInteger("autodns.subdomain.ttl", 60);
+	private final static int DOMAIN_TTL = parseInteger("autodns.domain.ttl", 3600);	
+	private final static int NS_TTL = parseInteger("autodns.nameserver.ttl", 86400);	
 	
 	public DnsUpdateHelper(Domain domain) {
 		this.domain = domain;
@@ -55,7 +46,6 @@ public class DnsUpdateHelper {
 		Logger.debug("@"+System.currentTimeMillis()+" sending Update: \n" + message + "\n");
 		performUpdate(message);
 	}
-
 	
 	// TODO move string to template
 	private String getHeader() {
@@ -206,4 +196,15 @@ public class DnsUpdateHelper {
 			return false;
 		}
 	}
+	
+	private static int parseInteger(String key, int fallback){
+		if(key != null && ConfigFactory.load().hasPath(key)){	
+		try {
+			return Integer.parseInt(ConfigFactory.load().getString(key));
+		} catch(NumberFormatException ex){
+			Logger.warn("cannot parse "+ex.getLocalizedMessage());
+		}
+		}
+		return fallback;
+	}	
 }
