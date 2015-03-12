@@ -168,23 +168,29 @@ public class DnsUpdateHelper {
 		StringBuilder sb = new StringBuilder();
 		for (DnsEntry entry : domain.findValidEntries()) {
 			if(!entry.toDelete) {
-				sb.append("<rr>")
-				.append("<name>")
-				.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
-				.append("</name>")
-				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>");
-				if(entry.needsUpdate6()) {
-					sb.append("<type>AAAA</type>")
+				if(entry.updated6 != null) {
+					sb.append("<rr>")
+					.append("<name>")
+					.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
+					.append("</name>")
+					.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")	
+					.append("<type>AAAA</type>")
 					.append("<value>")
 					.append(entry.updatedIp6)
 					.append("</value>")
-					.append("</rr>");	
-				} else {
-					sb.append("<type>A</type>")
+					.append("</rr>");							
+				}
+				if(entry.updatedIp != null) {
+					sb.append("<rr>")
+					.append("<name>")
+					.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
+					.append("</name>")
+					.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")							
+					.append("<type>A</type>")
 					.append("<value>")
 					.append(entry.updatedIp)
 					.append("</value>")
-					.append("</rr>");	
+					.append("</rr>");						
 				}		
 			} else {
 				entry.delete();
