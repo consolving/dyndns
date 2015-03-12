@@ -1,5 +1,6 @@
 package models;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,14 +37,25 @@ public class Domain extends Model {
 	public static Finder<Long, Domain> find = new Finder<Long, Domain>(Long.class, Domain.class);
 
 	public Set<DnsEntry> findNeedsToChanged() {
-		Set<DnsEntry> entries = DnsEntry.find.where().isNotNull("updatedIp").isNull("updated").eq("domain", this)
-				.findSet();
+		Set<DnsEntry> entries = new HashSet<DnsEntry>(); 
+		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp").isNull("updated").eq("domain", this).findSet()) {
+			entries.add(entry);
+		}		
+		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp6").isNull("updated").eq("domain", this).findSet()) {
+			entries.add(entry);
+		}
 		Logger.info("found " + entries.size() + " Entries to update!");
 		return entries;
 	}
-
+	
 	public Set<DnsEntry> findValidEntries() {
-		Set<DnsEntry> entries = DnsEntry.find.where().isNotNull("updatedIp").eq("domain", this).findSet();
+		Set<DnsEntry> entries = new HashSet<DnsEntry>(); 
+		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp").eq("domain", this).findSet()) {
+			entries.add(entry);
+		}
+		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp6").eq("domain", this).findSet()) {
+			entries.add(entry);
+		}
 		Logger.info("found " + entries.size() + " valid Entries!");
 		return entries;
 	}

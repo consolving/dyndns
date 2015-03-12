@@ -30,7 +30,8 @@ public class DnsUpdateJob implements Runnable {
 		try {
 			List<Domain> domains = Domain.find.all();
 			for (Domain domain : domains) {
-				if (domain.findNeedsToChanged().size() > 0 || domain.forceUpdate) {
+				if (domain.findNeedsToChanged().size() > 0 || 
+					domain.forceUpdate) {
 					Logger.info("@" + System.currentTimeMillis() + " updating domain " + domain.name + " "
 							+ domain.findNeedsToChanged().size() + "/" + domain.dnsEntries.size());
 					new DnsUpdateHelper(domain).update();

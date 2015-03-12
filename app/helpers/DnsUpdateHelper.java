@@ -2,10 +2,6 @@ package helpers;
 
 import java.util.Date;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -123,8 +119,11 @@ public class DnsUpdateHelper {
 
 	// TODO move string to template
 	private String getFooter() {
-		return "</zone>" + "<ns_group>default</ns_group>" + "<ctid/>"
-				+ "</task>" + "</request>";
+		return 	"</zone>" 
+				+ "<ns_group>default</ns_group>" 
+				+ "<ctid/>"
+				+ "</task>" 
+				+ "</request>";
 	}
 
 	/**
@@ -133,6 +132,7 @@ public class DnsUpdateHelper {
 	private void updateEntries() {
 		for (DnsEntry entry : domain.findNeedsToChanged()) {
 			entry.actualIp = entry.updatedIp;
+			entry.actualIp6 = entry.updatedIp6;
 			entry.updated = new Date();
 			Logger.info("@"+System.currentTimeMillis()+" did update for " + entry);
 			entry.save();
@@ -142,6 +142,7 @@ public class DnsUpdateHelper {
 	}
 
 	private void performUpdate(String content) {
+		Logger.debug("update: "+content);
 		Promise<Document> xmlPromise = WS.url(AUTODNS_HOST)
 				.setHeader("Content-Type", "text/xml; charset=utf-8")
 				.post(content).map(new Function<WSResponse, Document>() {
@@ -167,12 +168,20 @@ public class DnsUpdateHelper {
 				.append("<name>")
 				.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
 				.append("</name>")
-				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")
-				.append("<type>A</type>")
-				.append("<value>")
-				.append(entry.updatedIp)
-				.append("</value>")
-				.append("</rr>");				
+				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>");
+				if(entry.needsUpdate6()) {
+					sb.append("<type>AAAA</type>")
+					.append("<value>")
+					.append(entry.updatedIp6)
+					.append("</value>")
+					.append("</rr>");	
+				} else {
+					sb.append("<type>A</type>")
+					.append("<value>")
+					.append(entry.updatedIp)
+					.append("</value>")
+					.append("</rr>");	
+				}		
 			} else {
 				entry.delete();
 				Logger.info("@"+System.currentTimeMillis()+" deleting "+entry);
@@ -182,28 +191,19 @@ public class DnsUpdateHelper {
 	}
 
 	private boolean getUpdateStatus(Document doc) {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		try {
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			doc.getDocumentElement().normalize();
-			NodeList layerConfigList = doc.getElementsByTagName("type");
-			Node node = layerConfigList.item(0);
-			return node != null
-					&& node.getTextContent().toLowerCase().equals("success");
-		} catch (ParserConfigurationException ex) {
-			Logger.warn("@"+System.currentTimeMillis()+" could not parse response: %s",
-					ex.getLocalizedMessage());
-			return false;
-		}
+		doc.getDocumentElement().normalize();
+		NodeList layerConfigList = doc.getElementsByTagName("type");
+		Node node = layerConfigList.item(0);
+		return node != null && node.getTextContent().toLowerCase().equals("success");
 	}
 	
 	private static int parseInteger(String key, int fallback){
 		if(key != null && ConfigFactory.load().hasPath(key)){	
-		try {
-			return Integer.parseInt(ConfigFactory.load().getString(key));
-		} catch(NumberFormatException ex){
-			Logger.warn("cannot parse "+ex.getLocalizedMessage());
-		}
+			try {
+				return Integer.parseInt(ConfigFactory.load().getString(key));
+			} catch(NumberFormatException ex){
+				Logger.warn("cannot parse "+ex.getLocalizedMessage());
+			}
 		}
 		return fallback;
 	}	

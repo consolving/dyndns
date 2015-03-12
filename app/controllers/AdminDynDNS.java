@@ -2,15 +2,13 @@ package controllers;
 
 import java.util.List;
 
-import controllers.routes;
 import models.Account;
 import models.DnsEntry;
 import models.Domain;
-import fileauth.actions.BasicAuth;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.Admin.*;
+import views.html.Admin.index;
+import fileauth.actions.BasicAuth;
 
 @BasicAuth
 public class AdminDynDNS extends Application {

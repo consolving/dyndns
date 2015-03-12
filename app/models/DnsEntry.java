@@ -9,7 +9,6 @@ package models;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +32,9 @@ public class DnsEntry extends Model {
 	public String updatedIp = null;
 	public String actualIp = null;
 
+	public String updatedIp6 = null;
+	public String actualIp6 = null;
+	
 	@Required
 	public String name;
 	public String apiKey = generateApiKey();
@@ -53,7 +55,11 @@ public class DnsEntry extends Model {
 
 	public void update(String ip, String pw) {
 		if (apiKey.equals(pw.trim()) && (this.actualIp == null || !this.actualIp.equals(ip))) {
-			this.updatedIp = ip;
+			if(ip.indexOf(":") > 0) {
+				this.updatedIp6 = ip;
+			} else {
+				this.updatedIp = ip;				
+			}
 			this.changed = new Date();
 			this.updated = null;
 			this.save();
@@ -63,15 +69,27 @@ public class DnsEntry extends Model {
 	public boolean needsUpdate() {
 		return !toDelete && updatedIp != null && !updatedIp.equals(actualIp);
 	}
-
+	
+	public boolean needsUpdate6() {
+		return !toDelete && updatedIp != null && !updatedIp.equals(actualIp);
+	}
+	
 	public boolean hasUpdate() {
 		return !toDelete && updatedIp != null && updatedIp.equals(actualIp);
 	}
+	
+	public boolean hasUpdate6() {
+		return !toDelete && updatedIp != null && updatedIp.equals(actualIp);
+	}
 
+	public boolean needsSetup6() {
+		return  !toDelete && updatedIp == null && actualIp == null;
+	}
+	
 	public boolean needsSetup() {
 		return !toDelete && updatedIp == null && actualIp == null;
 	}
-
+	
 	public boolean checkName() {
 		SubDomain sd = SubDomain.find.byId(subDomain.id);
 		if (name.trim().endsWith(sd.name)) {
@@ -89,7 +107,7 @@ public class DnsEntry extends Model {
 		changed = new Date();
 		updatedIp = "";
 	}
-
+	
 	public static boolean exists(DnsEntry entry) {
 		return entry != null && entry.name != null && find.where().eq("name", entry.name).findRowCount() > 0;
 	}

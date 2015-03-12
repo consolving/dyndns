@@ -19,5 +19,7 @@ POST	/admin/dyndns/:id				controllers.AdminDynDNS.update(id: Long)
 POST	/admin/dyndns/:id/apiKey		controllers.AdminDynDNS.resetApiKey(id: Long)
 POST	/admin/dyndns/:id/delete		controllers.AdminDynDNS.delete(id: Long)
 
+GET     /admin/metrics              	controllers.Metrics.metrics()
+ 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                   controllers.Assets.at(path="/public", file)

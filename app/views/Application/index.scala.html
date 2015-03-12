@@ -26,17 +26,25 @@
                     <small>
                         <br />
                         @if(controllers.Application.getAccount().isAdmin()){
-                        @entry.account | 
+                        @entry.account | <br />
                         }
                         @if(entry.hasUpdate()){
                         @entry.actualIp
-                        <br />updated @entry.updated.since()
+                        <br />updated ip4  @entry.updated.since()
+                        }
+                        @if(entry.hasUpdate6()){
+                        @entry.actualIp6
+                        <br />updated ip6 @entry.updated.since()
                         }
                         @if(entry.needsUpdate()){
                         @entry.updatedIp =>
                         <br />@entry.actualIp
                         }
-                        @if(entry.needsSetup()){
+                        @if(entry.needsUpdate6()){
+                        @entry.updatedIp6 =>
+                        <br />@entry.actualIp6
+                        }
+                        @if(entry.needsSetup() || entry.needsSetup6()){
                         no IP set.
                         }
                         @if(entry.toDelete){

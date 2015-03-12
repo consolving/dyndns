@@ -16,6 +16,8 @@ create table dns_entry (
   changed                   timestamp,
   updated_ip                varchar(255),
   actual_ip                 varchar(255),
+  updated_ip6               varchar(255),
+  actual_ip6                varchar(255),
   name                      varchar(255),
   api_key                   varchar(255),
   to_delete                 boolean,
