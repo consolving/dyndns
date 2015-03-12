@@ -39,6 +39,7 @@ public class DnsUpdate extends Controller {
 				return ok("nochg " + ip);
 			} else {
 				MetricsRegistry.defaultRegistry().meter("DnsUpdate-good").mark();
+				// TODO this should be checked for each, ipv4 and ipv6.
 				return ok("good " + ip);				
 			}
 		}
