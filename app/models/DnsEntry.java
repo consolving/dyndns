@@ -72,7 +72,7 @@ public class DnsEntry extends Model {
 	}
 	
 	public boolean needsUpdate6() {
-		return !toDelete && updatedIp6 != null && !actualIp6.equals(actualIp);
+		return !toDelete && updatedIp6 != null && !updatedIp6.equals(actualIp6);
 	}
 	
 	public boolean hasUpdate() {
@@ -80,7 +80,7 @@ public class DnsEntry extends Model {
 	}
 	
 	public boolean hasUpdate6() {
-		return !toDelete && updatedIp6 != null && actualIp6.equals(actualIp);
+		return !toDelete && updatedIp6 != null && updatedIp6.equals(actualIp6);
 	}
 
 	public boolean needsSetup6() {
