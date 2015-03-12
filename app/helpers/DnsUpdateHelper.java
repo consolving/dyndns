@@ -168,7 +168,7 @@ public class DnsUpdateHelper {
 		StringBuilder sb = new StringBuilder();
 		for (DnsEntry entry : domain.findValidEntries()) {
 			if(!entry.toDelete) {
-				if(entry.updated6 != null) {
+				if(entry.updatedIp6 != null) {
 					sb.append("<rr>")
 					.append("<name>")
 					.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
