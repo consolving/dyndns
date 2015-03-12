@@ -133,7 +133,11 @@ public class DnsUpdateHelper {
 		for (DnsEntry entry : domain.findNeedsToChanged()) {
 			entry.actualIp = entry.updatedIp;
 			entry.actualIp6 = entry.updatedIp6;
-			entry.updated = new Date();
+			if(entry.needsUpdate6()) { 
+				entry.updated6 = new Date();
+			} else {
+				entry.updated = new Date();				
+			}
 			Logger.info("@"+System.currentTimeMillis()+" did update for " + entry);
 			entry.save();
 		}

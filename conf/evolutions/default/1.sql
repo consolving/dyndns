@@ -12,8 +12,9 @@ create table account (
 create table dns_entry (
   id                        bigint auto_increment not null,
   created                   timestamp,
-  updated                   timestamp,
   changed                   timestamp,
+  updated                   timestamp,
+  updated6                  timestamp,
   updated_ip                varchar(255),
   actual_ip                 varchar(255),
   updated_ip6               varchar(255),

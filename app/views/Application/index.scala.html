@@ -34,7 +34,7 @@
                         }
                         @if(entry.hasUpdate6()){
                         @entry.actualIp6
-                        <br />updated ip6 @entry.updated.since()
+                        <br />updated ip6 @entry.updated6.since()
                         }
                         @if(entry.needsUpdate()){
                         @entry.updatedIp =>
@@ -44,8 +44,11 @@
                         @entry.updatedIp6 =>
                         <br />@entry.actualIp6
                         }
-                        @if(entry.needsSetup() || entry.needsSetup6()){
+                        @if(entry.needsSetup()){
                         no IP set.
+                        }
+                        @if(entry.needsSetup6()){
+                        no IPv6 set.
                         }
                         @if(entry.toDelete){
                         deleted @entry.changed.since()

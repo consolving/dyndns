@@ -26,9 +26,10 @@ public class DnsEntry extends Model {
 	public Long id;
 
 	public Date created = new Date();
-	public Date updated = new Date();
 	public Date changed = new Date();
-
+	public Date updated = new Date();
+	public Date updated6 = new Date();
+	
 	public String updatedIp = null;
 	public String actualIp = null;
 
@@ -71,7 +72,7 @@ public class DnsEntry extends Model {
 	}
 	
 	public boolean needsUpdate6() {
-		return !toDelete && updatedIp != null && !updatedIp.equals(actualIp);
+		return !toDelete && updatedIp6 != null && !actualIp6.equals(actualIp);
 	}
 	
 	public boolean hasUpdate() {
@@ -79,11 +80,11 @@ public class DnsEntry extends Model {
 	}
 	
 	public boolean hasUpdate6() {
-		return !toDelete && updatedIp != null && updatedIp.equals(actualIp);
+		return !toDelete && updatedIp6 != null && actualIp6.equals(actualIp);
 	}
 
 	public boolean needsSetup6() {
-		return  !toDelete && updatedIp == null && actualIp == null;
+		return  !toDelete && updatedIp6 == null && actualIp6 == null;
 	}
 	
 	public boolean needsSetup() {
