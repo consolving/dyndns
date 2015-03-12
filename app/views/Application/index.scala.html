@@ -26,15 +26,19 @@
                     <small>
                         <br />
                         @if(controllers.Application.getAccount().isAdmin()){
-                        @entry.account | <br />
+                        @entry.account |
                         }
                         @if(entry.hasUpdate()){
+                        <p>
                         @entry.actualIp
                         <br />updated ip4  @entry.updated.since()
+                        </p>
                         }
                         @if(entry.hasUpdate6()){
+                        <p>
                         @entry.actualIp6
                         <br />updated ip6 @entry.updated6.since()
+                        </p>
                         }
                         @if(entry.needsUpdate()){
                         @entry.updatedIp =>
@@ -45,10 +49,10 @@
                         <br />@entry.actualIp6
                         }
                         @if(entry.needsSetup()){
-                         <br />no IP set.
+                        <br />no IP set.
                         }
                         @if(entry.needsSetup6()){
-                         <br />no IPv6 set.
+                        <br />no IPv6 set.
                         }
                         @if(entry.toDelete){
                         deleted @entry.changed.since()
