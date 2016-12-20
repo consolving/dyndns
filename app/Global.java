@@ -7,8 +7,6 @@ import play.Application;
 import play.GlobalSettings;
 import play.Logger;
 import play.libs.Yaml;
-import play.mvc.Action;
-import play.mvc.Http;
 
 import com.avaje.ebean.Ebean;
 

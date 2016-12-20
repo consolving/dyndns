@@ -155,6 +155,8 @@ public class DnsUpdateHelper {
 						if (getUpdateStatus(doc)) {
 							Logger.info("@"+System.currentTimeMillis()+" success!");
 							updateEntries();
+						} else {
+							Logger.error(doc.toString());
 						}
 						return doc;
 					}
