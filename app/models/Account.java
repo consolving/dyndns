@@ -30,6 +30,10 @@ public class Account extends Model {
 		this.username = username;
 	}
 
+	public List<DnsEntry> getEntries() {
+		return DnsEntry.find.where().eq("account", this).findList();
+	}
+	
 	public boolean isAdmin() {
 		return FileAuth.contains("root", this.username);
 	}

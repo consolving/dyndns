@@ -10,11 +10,11 @@ import models.Domain;
 import models.SubDomain;
 import play.data.Form;
 import play.mvc.Result;
-import views.html.dyndns.index;
+import views.html.DynDns.index;
 import fileauth.actions.BasicAuth;
 
 @BasicAuth
-public class Domains extends Application {
+public class DynDns extends Application {
 	final static Form<DnsEntry> ENTRY_FORM = form(DnsEntry.class);
 
 	public static Result index() {
@@ -29,7 +29,7 @@ public class Domains extends Application {
 			entry.markToDelete();
 			entry.save();
 		}
-		return redirect(routes.Domains.index());		
+		return redirect(routes.DynDns.index());		
 	}
 	
 	public static Result save() {
@@ -45,7 +45,7 @@ public class Domains extends Application {
 				entry.domain = Domain.find.byId(sd.domain.id);				
 				entry.save();
 			}
-			return redirect(routes.Domains.index());
+			return redirect(routes.DynDns.index());
 		}
 	}
 }

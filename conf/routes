@@ -4,9 +4,9 @@
 
 # Home page
 GET     /                               controllers.Application.index()
-GET		/dyndns						    controllers.Domains.index()
-POST	/dyndns/:id/delete				controllers.Domains.delete(id: Long)
-POST	/dyndns					        controllers.Domains.save()
+GET		/dyndns						    controllers.DynDns.index()
+POST	/dyndns/:id/delete				controllers.DynDns.delete(id: Long)
+POST	/dyndns					        controllers.DynDns.save()
 GET		/update/:k					    controllers.DnsUpdate.update(k: String)
 POST	/update/:k					    controllers.DnsUpdate.update(k: String)
 GET		/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
@@ -14,6 +14,7 @@ POST	/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
 
 
 
+GET		/admin/accounts				    controllers.Accounts.index()
 GET		/admin/dyndns				    controllers.AdminDynDNS.index()
 POST	/admin/dyndns/:id				controllers.AdminDynDNS.update(id: Long)
 POST	/admin/dyndns/:id/apiKey		controllers.AdminDynDNS.resetApiKey(id: Long)

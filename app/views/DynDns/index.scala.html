@@ -9,7 +9,7 @@
     	<h1><small>@entries.size()</small> Hosts</h1>
 	</div>
     <div class="col-md-3">
-		@form(routes.Domains.save()) {
+		@form(routes.DynDns.save()) {
             <input type="hidden" name="account.id" id="account_id" value="@controllers.Application.getAccount().id" />                       
             @inputText(
                 entryForm("name"), 
@@ -55,7 +55,7 @@
                     </td>
                     <td>
                    
-                    @form(routes.Domains.delete(entry.id)) { <a href="#" class="btn btn-default">Edit</a><button class="btn btn-danger" type="submit">Delete</button>}
+                    @form(routes.DynDns.delete(entry.id)) { <a href="#" class="btn btn-default">Edit</a><button class="btn btn-danger" type="submit">Delete</button>}
                     </td>
                 </tr>		
                 } 

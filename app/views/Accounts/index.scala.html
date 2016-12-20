@@ -1,0 +1,42 @@
+@import views.addons._
+@import helper._
+@(accounts: List[Account])
+
+@main("DYD - Accounts") {
+<div class="jumbotron">
+    <h1>DYD <small>is here</small></h1>
+</div>
+
+<div class="row">
+    @if(controllers.Application.getAccount().isAdmin()){
+    <div class="span12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Account</th>
+                   	<th>Admin</th> 				
+                    <th>Entries</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(account <- accounts) {
+                <tr>
+                    <td class="word-break">@account</td>
+                   	<td>@if(account.isAdmin()){yes}</td>
+                   	<td>
+                   		<ul>
+                   		@for(entry <- account.getEntries()) {
+                   			<li>@entry</li>
+                   		}
+                   		</ul>
+                   	</td>
+                   	<td></td>                   	                   	
+                </tr>
+                }
+            </tbody> 
+        </table>
+    </div>
+    }
+</div>
+}
