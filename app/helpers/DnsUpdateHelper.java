@@ -45,8 +45,7 @@ public class DnsUpdateHelper {
 	
 	// TODO move string to template
 	private String getHeader() {
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
-				+ "<request>" + "<auth>" + "<user>"
+		return "<request>" + "<auth>" + "<user>"
 				+ AUTODNS_USERNAME
 				+ "</user>"
 				+ "<password>"
