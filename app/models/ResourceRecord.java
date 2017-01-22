@@ -22,6 +22,7 @@ public class ResourceRecord extends Model {
 	public String type;
 	public String value;
 	public Integer ttl = 1000;
+	public Integer pref;
 
 	@ManyToOne
 	@Required
@@ -57,6 +58,10 @@ public class ResourceRecord extends Model {
 		return ttl;
 	}
 
+	public Integer getPref() {
+		return pref;
+	}
+	
 	public static ResourceRecord getOrCreateFromDNSEntry(DnsEntry dnsEntry) {
 		String type, value;
 		if(dnsEntry.updatedIp != null ) {

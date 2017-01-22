@@ -31,6 +31,7 @@
   						<th>Type</th>
   						<th>Value</th>
   						<th>TTL</th>
+  						<th>Pref</th>
   					</tr>
   					@for(rr <- domain.getResourceRecords()) {
   					<tr>
@@ -38,6 +39,7 @@
 	  					<td>@rr.getType()</td>
 	  					<td>@rr.getValue()</td>
 	  					<td>@rr.getTtl()</td>
+	  					<td>@rr.getPref()</td>
   					</tr>
   					}
   				</table>

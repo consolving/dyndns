@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +26,9 @@ public class Domain extends Model {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
+	public Date created = new Date();
+	public Date updated = new Date();
+	
 	public String name;
 
 	public String hostmaster;
@@ -71,7 +75,7 @@ public class Domain extends Model {
 	}
 
 	public List<ResourceRecord> getResourceRecords() {
-		return ResourceRecord.Find.where().eq("domain", this).order("name DESC").order("value DESC").findList();
+		return ResourceRecord.Find.where().eq("domain", this).order("name DESC").order("value DESC").order("pref ASC").findList();
 	}
 	
 	public void setNameservers(String... nameservers) {

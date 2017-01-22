@@ -30,6 +30,8 @@ create table dns_entry (
 
 create table domain (
   id                        bigint auto_increment not null,
+  created                   timestamp,
+  updated                   timestamp,
   name                      varchar(255),
   hostmaster                varchar(255),
   ip                        varchar(255),
@@ -52,6 +54,7 @@ create table resource_record (
   type                      varchar(255),
   value                     varchar(255),
   ttl                       integer,
+  pref                      integer,
   domain_id                 bigint,
   constraint pk_resource_record primary key (id))
 ;
