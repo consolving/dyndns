@@ -5,9 +5,11 @@
 @main("DYD - Accounts") {
 <div class="row">
     @if(controllers.Application.getAccount().isAdmin()){
-	<div class="jumbotron col-md-12">
+	<div class="jumbotron col-md-9">
 		<h1><small>@domains.size()</small> @if(domains.size()==1){Domain}else{Domains}</h1>
 	</div>   
+	<div class="col-md-3">
+	</div>
     <div class="span12">
         <table class="table">
             <thead>
