@@ -17,8 +17,8 @@ public class AdminDynDNS extends Application {
 		if(!account.isAdmin()) {
 			return forbidden();
 		}
-		List<DnsEntry> entries = DnsEntry.find.all();
-		List<Account> accounts = Account.find.all();
+		List<DnsEntry> entries = DnsEntry.Find.all();
+		List<Account> accounts = Account.Find.all();
 		return ok(index.render(entries, accounts));
 	}
 
@@ -29,7 +29,7 @@ public class AdminDynDNS extends Application {
 		}
 		Form<DnsEntry> entryForm = Form.form(DnsEntry.class).bindFromRequest();
 		DnsEntry entry = entryForm.get();
-		DnsEntry oldEntry = DnsEntry.find.byId(id);
+		DnsEntry oldEntry = DnsEntry.Find.byId(id);
 		entry.updated = null;
 		// FIXME work around for resetting APIKey Bug....
 		entry.apiKey = oldEntry.apiKey;
@@ -42,7 +42,7 @@ public class AdminDynDNS extends Application {
 		if(!account.isAdmin()) {
 			return forbidden();
 		}
-		DnsEntry entry = DnsEntry.find.byId(id);
+		DnsEntry entry = DnsEntry.Find.byId(id);
 		if (entry != null) {
 			Domain domain = Domain.find.byId(entry.domain.id);
 			entry.delete();
@@ -57,7 +57,7 @@ public class AdminDynDNS extends Application {
 		if(!account.isAdmin()) {
 			return forbidden();
 		}
-		DnsEntry entry = DnsEntry.find.byId(id);
+		DnsEntry entry = DnsEntry.Find.byId(id);
 		if (entry != null) {
 			entry.apiKey = DnsEntry.generateApiKey();
 			entry.update();

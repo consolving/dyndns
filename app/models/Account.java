@@ -24,14 +24,14 @@ public class Account extends Model {
 	@OneToMany(mappedBy = "account")
 	public List<DnsEntry> dnsEntries;
 
-	public static Finder<Long, Account> find = new Finder<Long, Account>(Long.class, Account.class);
+	public static Finder<Long, Account> Find = new Finder<Long, Account>(Long.class, Account.class);
 
 	public Account(String username) {
 		this.username = username;
 	}
 
 	public List<DnsEntry> getEntries() {
-		return DnsEntry.find.where().eq("account", this).findList();
+		return DnsEntry.Find.where().eq("account", this).findList();
 	}
 	
 	public boolean isAdmin() {
@@ -52,7 +52,7 @@ public class Account extends Model {
 	}
 
 	public static Account geAccountOrCreate(String username) {
-		Account account = Account.find.where().eq("username", username).findUnique();
+		Account account = Account.Find.where().eq("username", username).findUnique();
 		if (account == null) {
 			account = new Account(username);
 			account.save();

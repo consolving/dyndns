@@ -19,12 +19,12 @@ public class DynDns extends Application {
 
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());
-		List<DnsEntry> entries = DnsEntry.find.where().eq("account", account).eq("toDelete", false).findList();
+		List<DnsEntry> entries = DnsEntry.Find.where().eq("account", account).eq("toDelete", false).findList();
 		return ok(index.render(entries, ENTRY_FORM));
 	}
 
 	public static Result delete(Long id){
-		DnsEntry entry = DnsEntry.find.byId(id);
+		DnsEntry entry = DnsEntry.Find.byId(id);
 		if(entry != null){
 			entry.markToDelete();
 			entry.save();

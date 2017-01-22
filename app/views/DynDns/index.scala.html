@@ -6,7 +6,7 @@
 @main("DYD") {
 <div class="row">
 	<div class="jumbotron col-md-9">
-    	<h1><small>@entries.size()</small> Hosts</h1>
+    	<h1><small>@entries.size()</small> @if(entries.size()==1){Entry}else{Entries}</h1>
 	</div>
     <div class="col-md-3">
 		@form(routes.DynDns.save()) {

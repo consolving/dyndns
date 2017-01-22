@@ -52,7 +52,7 @@ public class DnsEntry extends Model {
 	@Required
 	public SubDomain subDomain;
 
-	public static Finder<Long, DnsEntry> find = new Finder<Long, DnsEntry>(Long.class, DnsEntry.class);
+	public static Finder<Long, DnsEntry> Find = new Finder<Long, DnsEntry>(Long.class, DnsEntry.class);
 
 	public void update(String ip, String pw) {
 		if (apiKey.equals(pw.trim()) && (this.actualIp == null || !this.actualIp.equals(ip))) {
@@ -110,7 +110,7 @@ public class DnsEntry extends Model {
 	}
 	
 	public static boolean exists(DnsEntry entry) {
-		return entry != null && entry.name != null && find.where().eq("name", entry.name).findRowCount() > 0;
+		return entry != null && entry.name != null && Find.where().eq("name", entry.name).findRowCount() > 0;
 	}
 
 	public static String generateApiKey() {

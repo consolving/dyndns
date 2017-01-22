@@ -22,7 +22,7 @@ public class Application extends Controller {
 		Account account = Account.geAccountOrCreate(request().username());
 		List<DnsEntry> entries = account.dnsEntries;
 		if (account.isAdmin()) {
-			entries = DnsEntry.find.all();
+			entries = DnsEntry.Find.all();
 		}
 		return ok(index.render(entries));
 	}

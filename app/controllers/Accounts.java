@@ -11,7 +11,7 @@ import views.html.Accounts.index;
 @BasicAuth
 public class Accounts extends Controller {
 	public static Result index() {
-		List<Account> accounts = Account.find.all();
+		List<Account> accounts = Account.Find.all();
 		return ok(index.render(accounts));
 	}
 }

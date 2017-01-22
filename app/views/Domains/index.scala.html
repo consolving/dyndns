@@ -1,0 +1,37 @@
+@import views.addons._
+@import helper._
+@(domains: List[Domain])
+
+@main("DYD - Accounts") {
+<div class="row">
+    @if(controllers.Application.getAccount().isAdmin()){
+	<div class="jumbotron col-md-9">
+		<h1><small>@domains.size()</small> @if(domains.size()==1){Domain}else{Domains}</h1>
+	</div>
+    <div class="col-md-3">  
+    </div>    
+    <div class="span12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Domain</th>
+                   	<th>Hostmaster</th> 				
+                    <th>IP</th>
+                    <th>needs Update?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(domain <- domains) {
+                <tr>
+                    <td class="word-break">@domain.name</td>
+                   	<td>@domain.hostmaster</td>
+                   	<td>@domain.ip</td>
+                   	<td>@if(domain.forceUpdate){yes}</td>                   	                   	
+                </tr>
+                }
+            </tbody> 
+        </table>
+    </div>
+    }
+</div>
+}

@@ -38,10 +38,10 @@ public class Domain extends Model {
 
 	public Set<DnsEntry> findNeedsToChanged() {
 		Set<DnsEntry> entries = new HashSet<DnsEntry>(); 
-		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp").isNull("updated").eq("domain", this).findSet()) {
+		for(DnsEntry entry : DnsEntry.Find.where().isNotNull("updatedIp").isNull("updated").eq("domain", this).findSet()) {
 			entries.add(entry);
 		}		
-		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp6").isNull("updated").eq("domain", this).findSet()) {
+		for(DnsEntry entry : DnsEntry.Find.where().isNotNull("updatedIp6").isNull("updated").eq("domain", this).findSet()) {
 			entries.add(entry);
 		}
 		Logger.info("found " + entries.size() + " Entries to update!");
@@ -50,10 +50,10 @@ public class Domain extends Model {
 	
 	public Set<DnsEntry> findValidEntries() {
 		Set<DnsEntry> entries = new HashSet<DnsEntry>(); 
-		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp").eq("domain", this).findSet()) {
+		for(DnsEntry entry : DnsEntry.Find.where().isNotNull("updatedIp").eq("domain", this).findSet()) {
 			entries.add(entry);
 		}
-		for(DnsEntry entry : DnsEntry.find.where().isNotNull("updatedIp6").eq("domain", this).findSet()) {
+		for(DnsEntry entry : DnsEntry.Find.where().isNotNull("updatedIp6").eq("domain", this).findSet()) {
 			entries.add(entry);
 		}
 		Logger.info("found " + entries.size() + " valid Entries!");
