@@ -31,17 +31,26 @@ public class Domain extends Model {
 	
 	public String name;
 
-	public String hostmaster;
-
+	public String soaEmail;
+	public Integer soaRefresh=43200;
+	public Integer soaRetry=7200;
+	public Integer soaExpire=1209600;
+	public Integer soaTtl=86400;
+	public Integer soaDefault=86400;
+	
 	public String ip;
 
+	public String nsAction;
 	public String context;
-	
+
 	@Column(columnDefinition = "TEXT")
 	public String nameservers;
+	public String systemNs;
 	
+	public Boolean wwwInclude;
 	public Boolean forceUpdate = false;
-
+	public Boolean domainsafe;
+	
 	@OneToMany(mappedBy = "domain")
 	public List<DnsEntry> dnsEntries;
 
@@ -88,6 +97,10 @@ public class Domain extends Model {
 	
 	public String[] getNameservers() {
 		return StringUtils.split(this.nameservers, "\n");
+	}
+	
+	public String getHostmaster() {
+		return soaEmail;
 	}
 	
 	public String toString() {

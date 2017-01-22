@@ -33,11 +33,20 @@ create table domain (
   created                   timestamp,
   updated                   timestamp,
   name                      varchar(255),
-  hostmaster                varchar(255),
+  soa_email                 varchar(255),
+  soa_refresh               integer,
+  soa_retry                 integer,
+  soa_expire                integer,
+  soa_ttl                   integer,
+  soa_default               integer,
   ip                        varchar(255),
+  ns_action                 varchar(255),
   context                   varchar(255),
   nameservers               TEXT,
+  system_ns                 varchar(255),
+  www_include               boolean,
   force_update              boolean,
+  domainsafe                boolean,
   constraint pk_domain primary key (id))
 ;
 

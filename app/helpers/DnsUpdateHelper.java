@@ -81,7 +81,7 @@ public class DnsUpdateHelper {
 				+ "<retry>14400</retry>"
 				+ "<expire>604800</expire>"
 				+ "<email>"
-				+ domain.hostmaster
+				+ domain.soaEmail
 				+ "</email>"
 				+ "</soa>"
 				+ "<nserver>"

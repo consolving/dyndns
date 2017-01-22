@@ -26,7 +26,7 @@
 			@for(domain <- ip.getDomains()) {
 			<tr>
 				<td><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
-				<td>@domain.hostmaster</td>
+				<td>@domain.getHostmaster()</td>
 			</tr>
 			}
 		</table>  	
