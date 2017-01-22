@@ -11,6 +11,7 @@ import models.SubDomain;
 import play.data.Form;
 import play.mvc.Result;
 import views.html.DynDns.index;
+import views.html.DynDns.hosts;
 import fileauth.actions.BasicAuth;
 
 @BasicAuth
