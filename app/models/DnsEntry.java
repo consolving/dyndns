@@ -58,12 +58,15 @@ public class DnsEntry extends Model {
 		if (apiKey.equals(pw.trim()) && (this.actualIp == null || !this.actualIp.equals(ip))) {
 			if(ip.indexOf(":") > 0) {
 				this.updatedIp6 = ip;
+				Ip.getOrCrate(actualIp6);
 			} else {
-				this.updatedIp = ip;				
+				this.updatedIp = ip;	
+				Ip.getOrCrate(actualIp);
 			}
 			this.changed = new Date();
 			this.updated = null;
 			this.save();
+			ResourceRecord.getOrCreateFromDNSEntry(this);
 		}
 	}
 

@@ -16,6 +16,7 @@ import com.typesafe.config.ConfigFactory;
 
 import models.DnsEntry;
 import models.Domain;
+import models.ResourceRecord;
 
 public class DnsUpdateHelper {
 
@@ -169,6 +170,7 @@ public class DnsUpdateHelper {
 		StringBuilder sb = new StringBuilder();
 		for (DnsEntry entry : domain.findValidEntries()) {
 			if(!entry.toDelete) {
+				ResourceRecord rr = ResourceRecord.getOrCreateFromDNSEntry(entry);
 				if(entry.updatedIp6 != null) {
 					sb.append("<rr>")
 					.append("<name>")
@@ -179,7 +181,8 @@ public class DnsUpdateHelper {
 					.append("<value>")
 					.append(entry.updatedIp6)
 					.append("</value>")
-					.append("</rr>");							
+					.append("</rr>");	
+					rr.value = entry.updatedIp6;
 				}
 				if(entry.updatedIp != null) {
 					sb.append("<rr>")
@@ -191,11 +194,18 @@ public class DnsUpdateHelper {
 					.append("<value>")
 					.append(entry.updatedIp)
 					.append("</value>")
-					.append("</rr>");						
-				}		
+					.append("</rr>");	
+					rr.value = entry.updatedIp;
+				}
+				rr.save();
 			} else {
+				ResourceRecord rr = ResourceRecord.getOrCreateFromDNSEntry(entry);
+				if(rr != null) {
+					rr.delete();
+					Logger.info("@"+System.currentTimeMillis()+" deleted "+rr);
+				}
 				entry.delete();
-				Logger.info("@"+System.currentTimeMillis()+" deleting "+entry);
+				Logger.info("@"+System.currentTimeMillis()+" deleted "+entry);
 			}
 		}
 		return sb.toString();

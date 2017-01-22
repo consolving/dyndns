@@ -42,13 +42,22 @@ public class ResourceRecord extends Model {
 	}
 	
 	public static ResourceRecord getOrCreateFromDNSEntry(DnsEntry dnsEntry) {
-		String type;
+		String type, value;
 		if(dnsEntry.updatedIp != null ) {
 			type="A";
+			value = dnsEntry.actualIp;
 		}else{
 			type="AAAA";
+			value = dnsEntry.actualIp6;
 		}
 		ResourceRecord rr = getOrCreate(dnsEntry.domain, dnsEntry.name, type);
+		rr.value = value;
+		rr.save();
 		return rr;
 	}
+	
+	public String toString() {
+		return name+" "+value+" "+ttl+" "+domain.toString();
+	}
+	
 }
