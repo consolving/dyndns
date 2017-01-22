@@ -102,6 +102,11 @@ public class DnsEntry extends Model {
 		return name != null;
 	}
 
+	public String getSubdomainPart() {
+		String fullName = this.name+"."+this.subDomain.name;
+		return fullName.replace("."+this.domain.name, "").trim();
+	}
+	
 	public String toString() {
 		return name + "." + subDomain.name;
 	}

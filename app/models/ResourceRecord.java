@@ -66,7 +66,7 @@ public class ResourceRecord extends Model {
 			type="AAAA";
 			value = dnsEntry.actualIp6;
 		}
-		ResourceRecord rr = getOrCreate(dnsEntry.domain, dnsEntry.name, type);
+		ResourceRecord rr = getOrCreate(dnsEntry.domain, dnsEntry.getSubdomainPart(), type);
 		rr.value = value;
 		rr.save();
 		return rr;

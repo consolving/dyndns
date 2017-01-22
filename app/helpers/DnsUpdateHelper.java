@@ -174,7 +174,7 @@ public class DnsUpdateHelper {
 				if(entry.updatedIp6 != null) {
 					sb.append("<rr>")
 					.append("<name>")
-					.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
+					.append(entry.getSubdomainPart())
 					.append("</name>")
 					.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")	
 					.append("<type>AAAA</type>")
