@@ -43,20 +43,22 @@ public class Ip extends Model {
 	}
 	
 	public static boolean valid(String value) {
-		String v = value != null ? value.trim() : value;
-		Matcher matcher;
-		matcher = IPV4_PATTERN.matcher(v);
-		if(matcher.matches()) {
-			return true;
+		if(value != null)  {
+			String v = value.trim();
+			Matcher matcher;
+			matcher = IPV4_PATTERN.matcher(v);
+			if(matcher.matches()) {
+				return true;
+			}
+			matcher = IPV6_STD_PATTERN.matcher(v);
+			if(matcher.matches()) {
+				return true;
+			}
+			matcher = IPV6_HEX_COMPRESSED_PATTERN.matcher(v);
+			if(matcher.matches()) {
+				return true;
+			}		
 		}
-		matcher = IPV6_STD_PATTERN.matcher(v);
-		if(matcher.matches()) {
-			return true;
-		}
-		matcher = IPV6_HEX_COMPRESSED_PATTERN.matcher(v);
-		if(matcher.matches()) {
-			return true;
-		}		
 		return false;
 	}
 }
