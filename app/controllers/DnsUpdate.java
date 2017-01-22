@@ -22,6 +22,7 @@ public class DnsUpdate extends Controller {
 	private static final Pattern IPV4_PATTERN = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 	private static final Pattern IPV6_STD_PATTERN =  Pattern.compile("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
 	private static final Pattern IPV6_HEX_COMPRESSED_PATTERN = Pattern.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
+	
 	public static Result updateIp(String k, String ip) {
 		DnsEntry entry = DnsEntry.Find.where().eq("apiKey", k.trim()).findUnique();
 		Logger.info("update for "+entry+" by "+ getAgent());
