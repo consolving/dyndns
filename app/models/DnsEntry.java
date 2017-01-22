@@ -110,7 +110,7 @@ public class DnsEntry extends Model {
 	}
 	
 	public static boolean exists(DnsEntry entry) {
-		return entry != null && entry.name != null && Find.where().eq("name", entry.name).findRowCount() > 0;
+		return entry != null && entry.name != null && Find.where().eq("name", entry.name).eq("domain", entry.domain).findRowCount() > 0;
 	}
 
 	public static String generateApiKey() {
