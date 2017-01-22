@@ -13,46 +13,47 @@
   			<dt>Value</dt>
   			<dd>@ip.getValue()</dd>
    			<dt>Type</dt>
-  			<dd>@ip.getType()</dd> 		 
-  			<dt>Domains</dt>  
-  			<dd>
-  				<table class="table">
-  					<tr>
-  						<th>Name</th>
-  						<th>Hostmaster</th>
-  					</tr>
-  					@for(domain <- ip.getDomains()) {
-  					<tr>
-	  					<td><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
-	  					<td>@domain.hostmaster</td>
-  					</tr>
-  					}
-  				</table>  			
-  			</dd>
-  			<dt>Resource Records</dt>  						  				
-  			<dd>
-  				<table class="table">
-  					<tr>
-  						<th>Name</th>
-  						<th>Type</th>
-  						<th>Value</th>
-  						<th>Domain</th>
-  						<th>TTL</th>
-  						<th>Pref</th>
-  					</tr>
-  					@for(rr <- ip.getResourceRecords()) {
-  					<tr>
-	  					<td>@rr.getName()</td>
-	  					<td>@rr.getType()</td>
-	  					<td>@rr.getValue()</td>
-	  					<th><a href="@routes.AdminDomains.show(rr.domain.id)">@rr.domain.name</a></th>
-	  					<td>@rr.getTtl()</td>
-	  					<td>@rr.getPref()</td>
-  					</tr>
-  					}
-  				</table>
-  			</dd>  			
-		</dl>
+  			<dd>@ip.getType()</dd> 			
+		</dl>  				 
+
+		@if(ip.getDomains().size() > 0) {
+		<h2>Domains</h2> 
+		<table class="table">
+			<tr>
+				<th>Name</th>
+				<th>Hostmaster</th>
+			</tr>
+			@for(domain <- ip.getDomains()) {
+			<tr>
+				<td><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
+				<td>@domain.hostmaster</td>
+			</tr>
+			}
+		</table>  	
+		}		
+ 						  				
+	  	@if(ip.getResourceRecords().size() > 0) {
+		<h2>Resource Records</h2> 
+		<table class="table">
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Domain</th>
+				<th>TTL</th>
+				<th>Pref</th>
+			</tr>
+			@for(rr <- ip.getResourceRecords()) {
+			<tr>
+				<td>@rr.getName()</td>
+				<td>@rr.getType()</td>
+				<th><a href="@routes.AdminDomains.show(rr.domain.id)">@rr.domain.name</a></th>
+				<td>@rr.getTtl()</td>
+				<td>@rr.getPref()</td>
+			</tr>
+			}
+		</table>
+		}
+
     </div>
     }
 </div>

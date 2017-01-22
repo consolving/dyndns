@@ -22,29 +22,29 @@
   			<dd>
   			@for(nameserver <- domain.getNameservers()) {
   			@nameserver<br />}
-  			</dd>   
-  			<dt>Resource Records</dt>  						  				
-  			<dd>
-  				<table class="table">
-  					<tr>
-  						<th>Name</th>
-  						<th>Type</th>
-  						<th>Value</th>
-  						<th>TTL</th>
-  						<th>Pref</th>
-  					</tr>
-  					@for(rr <- domain.getResourceRecords()) {
-  					<tr>
-	  					<td>@rr.getName()</td>
-	  					<td>@rr.getType()</td>
-	  					<td><a href="@routes.AdminIps.find(rr.getValue())">@rr.getValue()</a></td>
-	  					<td>@rr.getTtl()</td>
-	  					<td>@rr.getPref()</td>
-  					</tr>
-  					}
-  				</table>
-  			</dd>  			
-		</dl>
+  			</dd> 
+  		</dl>  
+	  	@if(domain.getResourceRecords().size() > 0) {
+	  	<h2>Resource Records</h2>
+		<table class="table">
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Value</th>
+				<th>TTL</th>
+				<th>Pref</th>
+			</tr>
+			@for(rr <- domain.getResourceRecords()) {
+			<tr>
+				<td>@rr.getName()</td>
+				<td>@rr.getType()</td>
+				<td><a href="@routes.AdminIps.find(rr.getValue())">@rr.getValue()</a></td>
+				<td>@rr.getTtl()</td>
+				<td>@rr.getPref()</td>
+			</tr>
+			}
+		</table>
+		}
     </div>
     }
 </div>
