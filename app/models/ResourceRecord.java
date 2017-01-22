@@ -21,7 +21,7 @@ public class ResourceRecord extends Model {
 	@Required
 	public String type;
 	public String value;
-	public Integer ttl;
+	public Integer ttl = 1000;
 
 	@ManyToOne
 	@Required

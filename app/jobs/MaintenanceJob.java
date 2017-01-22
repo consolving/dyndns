@@ -11,7 +11,7 @@ public class MaintenanceJob implements Runnable {
 	public void run() {
 		for(Domain domain : Domain.Find.all()) {
 			Ip.getOrCrate(domain.ip);
-			for(DnsEntry entry : domain.dnsEntries) {
+			for(DnsEntry entry : domain.findValidEntries()) {
 				Ip.getOrCrate(entry.actualIp6);
 				Ip.getOrCrate(entry.actualIp);
 				ResourceRecord.getOrCreateFromDNSEntry(entry);
