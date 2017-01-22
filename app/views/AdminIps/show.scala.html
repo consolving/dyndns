@@ -1,28 +1,34 @@
 @import views.addons._
 @import helper._
-@(domain: Domain)
+@(ip: Ip)
 
-@main("DYD - Domains") {
+@main("DYD - IP addresses") {
 <div class="row">
     @if(controllers.Application.getAccount().isAdmin()){
 	<div class="jumbotron col-md-12">
-		<h1><a href="@routes.AdminDomains.index()">Domains</a> - @domain.name</h1>
+		<h1><a href="@routes.AdminIps.index()">IP addresses</a> - @ip.value</h1>
 	</div>  
     <div class="span12">
     	<dl class="dl-horizontal">
-  			<dt>Name</dt>
-  			<dd>@domain.name</dd>
-   			<dt>Hostmaster</dt>
-  			<dd>@domain.hostmaster</dd> 		
-   			<dt>Ip</dt>
-  			<dd><a href="@routes.AdminIps.find(domain.ip)">@domain.ip</a></dd> 
-   			<dt>Context</dt>
-  			<dd>@domain.context</dd>   
-   			<dt>Nameserver</dt>
+  			<dt>Value</dt>
+  			<dd>@ip.getValue()</dd>
+   			<dt>Type</dt>
+  			<dd>@ip.getType()</dd> 		 
+  			<dt>Domains</dt>  
   			<dd>
-  			@for(nameserver <- domain.getNameservers()) {
-  			@nameserver<br />}
-  			</dd>   
+  				<table class="table">
+  					<tr>
+  						<th>Name</th>
+  						<th>Hostmaster</th>
+  					</tr>
+  					@for(domain <- ip.getDomains()) {
+  					<tr>
+	  					<td><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
+	  					<td>@domain.hostmaster</td>
+  					</tr>
+  					}
+  				</table>  			
+  			</dd>
   			<dt>Resource Records</dt>  						  				
   			<dd>
   				<table class="table">
@@ -33,11 +39,11 @@
   						<th>TTL</th>
   						<th>Pref</th>
   					</tr>
-  					@for(rr <- domain.getResourceRecords()) {
+  					@for(rr <- ip.getResourceRecords()) {
   					<tr>
 	  					<td>@rr.getName()</td>
 	  					<td>@rr.getType()</td>
-	  					<td><a href="@routes.AdminIps.find(rr.getValue())">@rr.getValue()</a></td>
+	  					<td>@rr.getValue()</td>
 	  					<td>@rr.getTtl()</td>
 	  					<td>@rr.getPref()</td>
   					</tr>

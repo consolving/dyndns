@@ -1,5 +1,6 @@
 package models;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,22 @@ public class Ip extends Model {
 	
 	public String value;
 	public String type;
+	
+	public String getValue() {
+		return value;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public List<ResourceRecord> getResourceRecords() {
+		return ResourceRecord.Find.where().eq("value", this.value).order("name DESC").order("value DESC").order("pref ASC").findList();
+	}
+
+	public List<Domain> getDomains() {
+		return Domain.Find.where().eq("ip", this.value).order("name DESC").findList();
+	}
 	
 	public static Ip getOrCrate(String value) {
 		String v = value != null ? value.trim() : value;

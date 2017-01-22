@@ -1,0 +1,33 @@
+@import views.addons._
+@import helper._
+@(ips: List[Ip])
+
+@main("DYD - IP addresses") {
+<div class="row">
+    @if(controllers.Application.getAccount().isAdmin()){
+	<div class="jumbotron col-md-9">
+		<h1><small>@ips.size()</small> @if(ips.size()==1){IP address}else{IP addresses}</h1>
+	</div>   
+	<div class="col-md-3">
+	</div>
+    <div class="span12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>Type</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                @for(ip <- ips){
+                <tr>
+                    <td class="word-break"><a href="@routes.AdminIps.show(ip.id)">@ip.getValue()</a></td>  
+                    <td>@ip.getType()</td>                                   	                   	
+                </tr>
+                }
+            </tbody> 
+        </table>
+    </div>
+    }
+</div>
+}

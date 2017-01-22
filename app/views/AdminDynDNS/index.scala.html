@@ -43,7 +43,7 @@
                             <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-repeat"></span></button></form>
                         </form>
                     </td>
-                    <td>@entry.updatedIp<br />@entry.actualIp</td>
+                    <td><a href="@routes.AdminIps.find(entry.updatedIp)">@entry.updatedIp</a><br /><a href="@routes.AdminIps.find(entry.actualIp)">@entry.actualIp</a></td>
                     <td>@entry.domain<br /><em>@entry.subDomain</em></td>	
                     <td>@entry.updated.since()</td>			
                     <td>
