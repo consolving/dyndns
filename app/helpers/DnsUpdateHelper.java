@@ -58,7 +58,7 @@ public class DnsUpdateHelper {
 				+ "</auth>"
 				+ "<task>"
 				+ "<code>"
-				+ domain.code
+				+ domain.context
 				+ "</code>"
 				+ "<zone>"
 				+ "<internal_ns>"

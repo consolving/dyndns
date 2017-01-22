@@ -33,7 +33,8 @@ create table domain (
   name                      varchar(255),
   hostmaster                varchar(255),
   ip                        varchar(255),
-  code                      varchar(255),
+  context                   varchar(255),
+  nameservers               TEXT,
   force_update              boolean,
   constraint pk_domain primary key (id))
 ;

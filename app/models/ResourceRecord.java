@@ -41,6 +41,22 @@ public class ResourceRecord extends Model {
 		return rr;
 	}
 	
+	public String getType() {
+		return this.type;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public Integer getTtl() {
+		return ttl;
+	}
+
 	public static ResourceRecord getOrCreateFromDNSEntry(DnsEntry dnsEntry) {
 		String type, value;
 		if(dnsEntry.updatedIp != null ) {

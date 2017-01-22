@@ -5,7 +5,7 @@
 # Home page
 GET     /                               controllers.Application.index()
 GET		/dyndns						    controllers.DynDns.index()
-GET		/dyndns/hosts				controllers.DynDns.hosts()
+GET		/dyndns/hosts					controllers.DynDns.hosts()
 POST	/dyndns/:id/delete				controllers.DynDns.delete(id: Long)
 POST	/dyndns					        controllers.DynDns.save()
 GET		/update/:k					    controllers.DnsUpdate.update(k: String)
@@ -15,6 +15,7 @@ POST	/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
 
 
 GET		/admin/domains				    controllers.Domains.index()
+GET		/admin/domains/:id				controllers.Domains.show(id: Long)
 GET		/admin/accounts				    controllers.Accounts.index()
 POST	/admin/jobs/:jobName/start		controllers.AdminDynDNS.startJob(jobName: String)
 GET		/admin/dyndns				    controllers.AdminDynDNS.index()

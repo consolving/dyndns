@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.apache.commons.lang3.StringUtils;
 
 import play.Logger;
 import play.db.ebean.Model;
@@ -28,7 +31,11 @@ public class Domain extends Model {
 
 	public String ip;
 
-	public String code;
+	public String context;
+	
+	@Column(columnDefinition = "TEXT")
+	public String nameservers;
+	
 	public Boolean forceUpdate = false;
 
 	@OneToMany(mappedBy = "domain")
@@ -63,6 +70,22 @@ public class Domain extends Model {
 		return entries;
 	}
 
+	public List<ResourceRecord> getResourceRecords() {
+		return ResourceRecord.Find.where().eq("domain", this).order("name DESC").order("value DESC").findList();
+	}
+	
+	public void setNameservers(String... nameservers) {
+		StringBuilder sb = new StringBuilder();
+		for(String nameserver : nameservers) {
+			sb.append(nameserver).append("\n");
+		}
+		this.nameservers = sb.toString();
+	}
+	
+	public String[] getNameservers() {
+		return StringUtils.split(this.nameservers, "\n");
+	}
+	
 	public String toString() {
 		return name;
 	}

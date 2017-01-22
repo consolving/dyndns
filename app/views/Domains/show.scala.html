@@ -1,0 +1,49 @@
+@import views.addons._
+@import helper._
+@(domain: Domain)
+
+@main("DYD - Accounts") {
+<div class="row">
+    @if(controllers.Application.getAccount().isAdmin()){
+	<div class="jumbotron col-md-12">
+		<h1><a href="@routes.Domains.index()">Domains</a> - @domain.name</h1>
+	</div>  
+    <div class="span12">
+    	<dl class="dl-horizontal">
+  			<dt>Name</dt>
+  			<dd>@domain.name</dd>
+   			<dt>Hostmaster</dt>
+  			<dd>@domain.hostmaster</dd> 		
+   			<dt>Ip</dt>
+  			<dd>@domain.ip</dd> 
+   			<dt>Context</dt>
+  			<dd>@domain.context</dd>   
+   			<dt>Nameserver</dt>
+  			<dd>
+  			@for(nameserver <- domain.getNameservers()) {
+  			@nameserver<br />}
+  			</dd>   
+  			<dt>Resource Records</dt>  						  				
+  			<dd>
+  				<table class="table">
+  					<tr>
+  						<th>Name</th>
+  						<th>Type</th>
+  						<th>Value</th>
+  						<th>TTL</th>
+  					</tr>
+  					@for(rr <- domain.getResourceRecords()) {
+  					<tr>
+	  					<td>@rr.getName()</td>
+	  					<td>@rr.getType()</td>
+	  					<td>@rr.getValue()</td>
+	  					<td>@rr.getTtl()</td>
+  					</tr>
+  					}
+  				</table>
+  			</dd>  			
+		</dl>
+    </div>
+    }
+</div>
+}
