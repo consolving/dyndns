@@ -49,7 +49,7 @@ public class DynDns extends Application {
 			DnsEntry entry = entryForm.get();
 			if (entry != null && !DnsEntry.exists(entry) && entry.checkName()) {
 				SubDomain sd = SubDomain.find.byId(entry.subDomain.id);
-				entry.domain = Domain.find.byId(sd.domain.id);				
+				entry.domain = Domain.Find.byId(sd.domain.id);				
 				entry.save();
 			}
 			return redirect(routes.DynDns.index());

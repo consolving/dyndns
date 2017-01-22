@@ -28,7 +28,7 @@ public class DnsUpdateJob implements Runnable {
 	public void run() {
 		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has started");
 		try {
-			List<Domain> domains = Domain.find.all();
+			List<Domain> domains = Domain.Find.all();
 			for (Domain domain : domains) {
 				if (domain.findNeedsToChanged().size() > 0 || 
 					domain.forceUpdate) {
@@ -42,6 +42,11 @@ public class DnsUpdateJob implements Runnable {
 			Logger.warn(ex.getLocalizedMessage(), ex);
 		}
 		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has ended");
+
+		Logger.info("@" + System.currentTimeMillis() + " MaintenanceJob started");
+		MaintenanceJob job = new MaintenanceJob();
+		job.run();
+		Logger.info("@" + System.currentTimeMillis() + " MaintenanceJob ended");
 	}
 
 }

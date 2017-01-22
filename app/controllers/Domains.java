@@ -11,7 +11,7 @@ import views.html.Domains.index;
 @BasicAuth
 public class Domains extends Controller {
 	public static Result index() {
-		List<Domain> domains = Domain.find.all();
+		List<Domain> domains = Domain.Find.all();
 		return ok(index.render(domains));
 	}
 }

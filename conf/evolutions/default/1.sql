@@ -38,6 +38,23 @@ create table domain (
   constraint pk_domain primary key (id))
 ;
 
+create table ip (
+  id                        bigint auto_increment not null,
+  value                     varchar(255),
+  type                      varchar(255),
+  constraint pk_ip primary key (id))
+;
+
+create table resource_record (
+  id                        bigint auto_increment not null,
+  name                      varchar(255),
+  type                      varchar(255),
+  value                     varchar(255),
+  ttl                       integer,
+  domain_id                 bigint,
+  constraint pk_resource_record primary key (id))
+;
+
 create table sub_domain (
   id                        bigint auto_increment not null,
   name                      varchar(255),
@@ -51,8 +68,10 @@ alter table dns_entry add constraint fk_dns_entry_domain_2 foreign key (domain_i
 create index ix_dns_entry_domain_2 on dns_entry (domain_id);
 alter table dns_entry add constraint fk_dns_entry_subDomain_3 foreign key (sub_domain_id) references sub_domain (id) on delete restrict on update restrict;
 create index ix_dns_entry_subDomain_3 on dns_entry (sub_domain_id);
-alter table sub_domain add constraint fk_sub_domain_domain_4 foreign key (domain_id) references domain (id) on delete restrict on update restrict;
-create index ix_sub_domain_domain_4 on sub_domain (domain_id);
+alter table resource_record add constraint fk_resource_record_domain_4 foreign key (domain_id) references domain (id) on delete restrict on update restrict;
+create index ix_resource_record_domain_4 on resource_record (domain_id);
+alter table sub_domain add constraint fk_sub_domain_domain_5 foreign key (domain_id) references domain (id) on delete restrict on update restrict;
+create index ix_sub_domain_domain_5 on sub_domain (domain_id);
 
 
 
@@ -65,6 +84,10 @@ drop table if exists account;
 drop table if exists dns_entry;
 
 drop table if exists domain;
+
+drop table if exists ip;
+
+drop table if exists resource_record;
 
 drop table if exists sub_domain;
 

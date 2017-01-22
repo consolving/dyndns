@@ -44,7 +44,7 @@ public class AdminDynDNS extends Application {
 		}
 		DnsEntry entry = DnsEntry.Find.byId(id);
 		if (entry != null) {
-			Domain domain = Domain.find.byId(entry.domain.id);
+			Domain domain = Domain.Find.byId(entry.domain.id);
 			entry.delete();
 			domain.forceUpdate = true;
 			domain.save();

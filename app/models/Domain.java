@@ -34,7 +34,10 @@ public class Domain extends Model {
 	@OneToMany(mappedBy = "domain")
 	public List<DnsEntry> dnsEntries;
 
-	public static Finder<Long, Domain> find = new Finder<Long, Domain>(Long.class, Domain.class);
+	@OneToMany(mappedBy = "domain")
+	public List<ResourceRecord> resourceRecords;
+	
+	public static Finder<Long, Domain> Find = new Finder<Long, Domain>(Long.class, Domain.class);
 
 	public Set<DnsEntry> findNeedsToChanged() {
 		Set<DnsEntry> entries = new HashSet<DnsEntry>(); 
@@ -66,7 +69,7 @@ public class Domain extends Model {
 
 	public static Map<String, String> optionsFor(Account account) {
 		LinkedHashMap<String, String> domains = new LinkedHashMap<String, String>();
-		for (Domain d : find.all()) {
+		for (Domain d : Find.all()) {
 			domains.put(d.id.toString(), d.name);
 		}
 		return domains;
