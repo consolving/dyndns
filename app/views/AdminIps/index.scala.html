@@ -21,7 +21,7 @@
             <tbody>
                 @for(ip <- ips){
                 <tr>
-                    <td class="word-break"><a href="@routes.AdminIps.show(ip.id)">@ip.getValue()</a></td>  
+                    <td class="word-break"><a href="@routes.AdminIps.show(ip.getValue())">@ip.getValue()</a></td>  
                     <td>@ip.getType()</td>                                   	                   	
                 </tr>
                 }

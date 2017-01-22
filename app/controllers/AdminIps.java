@@ -22,19 +22,7 @@ public class AdminIps extends Application {
 		return ok(index.render(ips));
 	}
 	
-	public static Result show(Long id) {
-		Account account = Account.geAccountOrCreate(request().username());
-		if(!account.isAdmin()) {
-			return forbidden();
-		}		
-		Ip ip = Ip.Find.byId(id);
-		if(ip == null) {
-			return redirect(routes.AdminIps.index());
-		}		
-		return ok(show.render(ip));		
-	}
-	
-	public static Result find(String value) {
+	public static Result show(String value) {
 		Account account = Account.geAccountOrCreate(request().username());
 		if(!account.isAdmin()) {
 			return forbidden();

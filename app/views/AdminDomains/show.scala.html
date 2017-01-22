@@ -15,7 +15,7 @@
    			<dt>Hostmaster</dt>
   			<dd>@domain.hostmaster</dd> 		
    			<dt>Ip</dt>
-  			<dd><a href="@routes.AdminIps.find(domain.ip)">@domain.ip</a></dd> 
+  			<dd><a href="@routes.AdminIps.show(domain.ip)">@domain.ip</a></dd> 
    			<dt>Context</dt>
   			<dd>@domain.context</dd>   
    			<dt>Nameserver</dt>
@@ -38,7 +38,7 @@
 			<tr>
 				<td>@rr.getName()</td>
 				<td>@rr.getType()</td>
-				<td><a href="@routes.AdminIps.find(rr.getValue())">@rr.getValue()</a></td>
+				<td><a href="@routes.AdminIps.show(rr.getValue())">@rr.getValue()</a></td>
 				<td>@rr.getTtl()</td>
 				<td>@rr.getPref()</td>
 			</tr>
