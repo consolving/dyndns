@@ -5,20 +5,31 @@
 
 @main("DYD") {
 <div class="row">
+
 	<div class="jumbotron col-md-9">
     	<h1><small>@entries.size()</small> @if(entries.size()==1){Entry}else{Entries}</h1>
 	</div>
+	
     <div class="col-md-3">
-    	<h3>start Jobs</h3>
-		@form(routes.AdminDynDNS.startJob("Maintenance")) {
-			<input type="submit" class="btn btn-primary" value="Maintenance" />
-        }   
-		@form(routes.AdminDynDNS.startJob("DnsUpdate")) {
-			<input type="submit" class="btn btn-primary" value="DnsUpdate" />
-        }            
+		@form(routes.DynDns.save()) {
+            <input type="hidden" name="account.id" id="account_id" value="@controllers.Application.getAccount().id" />                       
+            @inputText(
+                entryForm("name"), 
+                '_label -> "CNAME", 
+                'class -> "form-control", 
+                'placeholder -> "CNAME.domain.com"
+            )
+            @select(
+                entryForm("subDomain.id"), 
+                options(SubDomain.optionsFor(controllers.Application.getAccount())), 
+                '_label -> "Domain" , 
+                'class -> "form-control"
+            )      
+            <input type="submit" class="btn btn-primary" value="Create" />
+            <a href="@routes.DynDns.hosts()" target="_hosts" class="btn btn-default">show Hosts</a>
+        }    
     </div>
     
-
     <div class="col-md-12">
     <!-- TODO move to repsonsive divs -->
         <table class="table">
