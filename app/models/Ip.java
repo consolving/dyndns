@@ -26,11 +26,12 @@ public class Ip extends Model {
 	public String type;
 	
 	public static Ip getOrCrate(String value) {
-		Ip ip = Ip.Find.where().eq("value", value.trim()).findUnique();
+		String v = value != null ? value.trim() : value;
+		Ip ip = Ip.Find.where().eq("value", v).findUnique();
 		if(ip == null && valid(value)) {
 			ip = new Ip();
-			ip.value = value.trim();
-			Matcher matcher = IPV4_PATTERN.matcher(value.trim());
+			ip.value = v;
+			Matcher matcher = IPV4_PATTERN.matcher(v);
 			if(matcher.matches()) {
 				ip.type = "ipv4";
 			} else {
@@ -42,16 +43,17 @@ public class Ip extends Model {
 	}
 	
 	public static boolean valid(String value) {
+		String v = value != null ? value.trim() : value;
 		Matcher matcher;
-		matcher = IPV4_PATTERN.matcher(value.trim());
+		matcher = IPV4_PATTERN.matcher(v);
 		if(matcher.matches()) {
 			return true;
 		}
-		matcher = IPV6_STD_PATTERN.matcher(value.trim());
+		matcher = IPV6_STD_PATTERN.matcher(v);
 		if(matcher.matches()) {
 			return true;
 		}
-		matcher = IPV6_HEX_COMPRESSED_PATTERN.matcher(value.trim());
+		matcher = IPV6_HEX_COMPRESSED_PATTERN.matcher(v);
 		if(matcher.matches()) {
 			return true;
 		}		
