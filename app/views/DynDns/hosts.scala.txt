@@ -1,4 +1,3 @@
 @(entries: List[DnsEntry])
 @for(entry <- entries) {
-@entry
-}
+@entry}
