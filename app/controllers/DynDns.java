@@ -23,6 +23,12 @@ public class DynDns extends Application {
 		return ok(index.render(entries, ENTRY_FORM));
 	}
 
+	public static Result hosts() {
+		Account account = Account.geAccountOrCreate(request().username());
+		List<DnsEntry> entries = DnsEntry.Find.where().eq("account", account).eq("toDelete", false).findList();
+		return ok(hosts.render(entries));		
+	}
+	
 	public static Result delete(Long id){
 		DnsEntry entry = DnsEntry.Find.byId(id);
 		if(entry != null){
