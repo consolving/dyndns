@@ -9,9 +9,12 @@ import play.data.Form;
 import play.mvc.Result;
 import views.html.Admin.index;
 import fileauth.actions.BasicAuth;
+import jobs.DnsUpdateJob;
+import jobs.MaintenanceJob;
 
 @BasicAuth
 public class AdminDynDNS extends Application {
+	
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());
 		if(!account.isAdmin()) {
@@ -37,6 +40,22 @@ public class AdminDynDNS extends Application {
 		return redirect(routes.AdminDynDNS.index());
 	}
 
+	public static Result startJob(String jobName) {
+		Account account = Account.geAccountOrCreate(request().username());
+		if(!account.isAdmin()) {
+			return forbidden();
+		}
+		if("DnsUpdate".equals(jobName)) {
+			DnsUpdateJob job = new DnsUpdateJob();
+			job.run();
+		}
+		if("Maintenance".equals(jobName)) {
+			MaintenanceJob job = new MaintenanceJob();
+			job.run();			
+		}
+		return redirect(routes.AdminDynDNS.index());		
+	}
+	
 	public static Result delete(Long id) {
 		Account account = Account.geAccountOrCreate(request().username());
 		if(!account.isAdmin()) {

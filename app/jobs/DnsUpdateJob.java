@@ -42,11 +42,6 @@ public class DnsUpdateJob implements Runnable {
 			Logger.warn(ex.getLocalizedMessage(), ex);
 		}
 		Logger.info("@" + System.currentTimeMillis() + " DnsUpdate has ended");
-
-		Logger.info("@" + System.currentTimeMillis() + " MaintenanceJob started");
-		MaintenanceJob job = new MaintenanceJob();
-		job.run();
-		Logger.info("@" + System.currentTimeMillis() + " MaintenanceJob ended");
 	}
 
 }
