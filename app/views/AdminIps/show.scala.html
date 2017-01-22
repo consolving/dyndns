@@ -36,6 +36,7 @@
   						<th>Name</th>
   						<th>Type</th>
   						<th>Value</th>
+  						<th>Domain</th>
   						<th>TTL</th>
   						<th>Pref</th>
   					</tr>
@@ -44,6 +45,7 @@
 	  					<td>@rr.getName()</td>
 	  					<td>@rr.getType()</td>
 	  					<td>@rr.getValue()</td>
+	  					<th><a href="@routes.AdminDomains.show(rr.domain.id)">@rr.domain.name</a></th>
 	  					<td>@rr.getTtl()</td>
 	  					<td>@rr.getPref()</td>
   					</tr>
