@@ -21,7 +21,7 @@
             <tbody>
                 @for(domain <- domains) {
                 <tr>
-                    <td class="word-break"><a href="@routes.Domains.show(domain.id)">@domain.name</a></td>
+                    <td class="word-break"><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
                    	<td>@domain.hostmaster</td>
                    	<td>@domain.ip</td>
                    	<td>@if(domain.forceUpdate){yes}</td>                   	                   	

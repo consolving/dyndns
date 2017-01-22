@@ -7,11 +7,11 @@ import models.Account;
 import models.Domain;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.Domains.index;
-import views.html.Domains.show;
+import views.html.AdminDomains.index;
+import views.html.AdminDomains.show;
 
 @BasicAuth
-public class Domains extends Controller {
+public class AdminDomains extends Controller {
 	
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());

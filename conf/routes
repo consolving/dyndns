@@ -14,9 +14,9 @@ GET		/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
 POST	/update/:k					    controllers.DnsUpdate.updateIp(k: String, ip: String)
 
 
-GET		/admin/domains				    controllers.Domains.index()
-GET		/admin/domains/:id				controllers.Domains.show(id: Long)
-GET		/admin/accounts				    controllers.Accounts.index()
+GET		/admin/domains				    controllers.AdminDomains.index()
+GET		/admin/domains/:id				controllers.AdminDomains.show(id: Long)
+GET		/admin/accounts				    controllers.AdminAccounts.index()
 POST	/admin/jobs/:jobName/start		controllers.AdminDynDNS.startJob(jobName: String)
 GET		/admin/dyndns				    controllers.AdminDynDNS.index()
 POST	/admin/dyndns/:id				controllers.AdminDynDNS.update(id: Long)

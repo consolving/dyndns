@@ -2,11 +2,11 @@
 @import helper._
 @(domain: Domain)
 
-@main("DYD - Accounts") {
+@main("DYD - Domains") {
 <div class="row">
     @if(controllers.Application.getAccount().isAdmin()){
 	<div class="jumbotron col-md-12">
-		<h1><a href="@routes.Domains.index()">Domains</a> - @domain.name</h1>
+		<h1><a href="@routes.AdminDomains.index()">Domains</a> - @domain.name</h1>
 	</div>  
     <div class="span12">
     	<dl class="dl-horizontal">

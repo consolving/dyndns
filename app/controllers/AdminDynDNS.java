@@ -7,7 +7,7 @@ import models.DnsEntry;
 import models.Domain;
 import play.data.Form;
 import play.mvc.Result;
-import views.html.Admin.index;
+import views.html.AdminDynDNS.index;
 import fileauth.actions.BasicAuth;
 import jobs.DnsUpdateJob;
 import jobs.MaintenanceJob;
