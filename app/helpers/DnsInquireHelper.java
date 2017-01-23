@@ -71,6 +71,7 @@ public class DnsInquireHelper {
 				.setHeader("Content-Type", "text/xml; charset=utf-8")
 				.post(content).map(new Function<WSResponse, Document>() {
 					public Document apply(WSResponse response) {
+						Logger.debug("response: "+response.getBody());
 						Document doc = response.asXml();
 						if (getUpdateStatus(doc)) {
 							Logger.info("@"+System.currentTimeMillis()+" inquire "+domain.name+" success!");
@@ -103,7 +104,6 @@ public class DnsInquireHelper {
 		if(zoneList.getLength() == 1) {
 			NodeList elements = zoneList.item(0).getChildNodes();
 			for(int i = 0; i < elements.getLength(); i++) {
-				Logger.debug("node: "+elements.item(i).getNodeName());
 				switch(elements.item(i).getNodeName().toLowerCase()) {
 				case "main":
 					Node n = elements.item(i);
