@@ -1,14 +1,24 @@
 @import views.addons._
 @import helper._
-@(domains: List[Domain])
+@(domains: List[Domain], domainForm: Form[Domain])
 
-@main("DYD - Accounts") {
+@main("DYD - Domains") {
 <div class="row">
     @if(controllers.Application.getAccount().isAdmin()){
 	<div class="jumbotron col-md-9">
 		<h1><small>@domains.size()</small> @if(domains.size()==1){Domain}else{Domains}</h1>
 	</div>   
 	<div class="col-md-3">
+		@form(routes.AdminDomains.save()) {
+            <input type="hidden" name="account.id" id="account_id" value="@controllers.Application.getAccount().id" />  
+            @inputText(
+                domainForm("name"), 
+                '_label -> "domain.tld", 
+                'class -> "form-control", 
+                'placeholder -> "domain.tld"
+            )            
+            <input type="submit" class="btn btn-primary" value="Create" />
+        }               
 	</div>
     <div class="span12">
         <table class="table">
@@ -18,6 +28,7 @@
                    	<th>Hostmaster</th> 				
                     <th>IP</th>
                     <th>needs Update?</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -25,8 +36,19 @@
                 <tr>
                     <td class="word-break"><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
                    	<td>@domain.getHostmaster()</td>
-                   	<td><a href="@routes.AdminIps.show(domain.ip)">@domain.ip</a></td>
-                   	<td>@if(domain.forceUpdate){yes}</td>                   	                   	
+                   	<td>
+                   		@if(domain.ip != null) {
+                   			<a href="@routes.AdminIps.show(domain.ip)">@domain.ip</a>
+                   		} else {
+                   			-
+                   		}
+                   	</td>
+                   	<td>@if(domain.forceUpdate){yes}</td>  
+                   	<td>
+				 		@form(routes.AdminDomains.inquire(domain.id)) {
+							<input type="submit" class="btn btn-primary btn-block" value="Inquire DNS" />
+				        }                   	
+                   	</td>                 	                   	
                 </tr>
                 }
             </tbody> 

@@ -6,17 +6,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import play.Logger;
-import play.libs.ws.*;
-import play.libs.F.Function;
-import play.libs.F.Promise;
-import play.libs.ws.WSResponse;
-
 import com.typesafe.config.ConfigFactory;
 
 import models.DnsEntry;
 import models.Domain;
 import models.ResourceRecord;
+import play.Logger;
+import play.libs.F.Function;
+import play.libs.F.Promise;
+import play.libs.ws.WS;
+import play.libs.ws.WSResponse;
 
 public class DnsUpdateHelper {
 
@@ -40,7 +39,7 @@ public class DnsUpdateHelper {
 
 	public void update() {
 		String message = getHeader() + buildUpdateList() + getFooter();
-		Logger.debug("@"+System.currentTimeMillis()+" sending Update: \n" + message + "\n");
+		Logger.debug("@"+System.currentTimeMillis()+" sending Update for "+domain.name+":\n" + message + "\n");
 		performUpdate(message);
 	}
 	
@@ -57,9 +56,7 @@ public class DnsUpdateHelper {
 				+ "</context>"
 				+ "</auth>"
 				+ "<task>"
-				+ "<code>"
-				+ domain.context
-				+ "</code>"
+				+ "<code>0202</code>"
 				+ "<zone>"
 				+ "<internal_ns>"
 				+ AUTODNS_NS_1
@@ -146,17 +143,16 @@ public class DnsUpdateHelper {
 	}
 
 	private void performUpdate(String content) {
-		Logger.debug("update: "+content);
 		Promise<Document> xmlPromise = WS.url(AUTODNS_HOST)
 				.setHeader("Content-Type", "text/xml; charset=utf-8")
 				.post(content).map(new Function<WSResponse, Document>() {
 					public Document apply(WSResponse response) {
 						Document doc = response.asXml();
 						if (getUpdateStatus(doc)) {
-							Logger.info("@"+System.currentTimeMillis()+" success!");
+							Logger.info("@"+System.currentTimeMillis()+" updating "+domain.name+" success!");
 							updateEntries();
 						} else {
-							Logger.error("@"+System.currentTimeMillis()+" error:\n", doc.getTextContent());
+							Logger.error("@"+System.currentTimeMillis()+" updating "+domain.name+" error:\n", doc.getTextContent());
 						}
 						return doc;
 					}

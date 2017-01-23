@@ -41,7 +41,6 @@ create table domain (
   soa_default               integer,
   ip                        varchar(255),
   ns_action                 varchar(255),
-  context                   varchar(255),
   nameservers               TEXT,
   system_ns                 varchar(255),
   www_include               boolean,

@@ -15,9 +15,13 @@
    			<dt>Hostmaster</dt>
   			<dd>@domain.getHostmaster()</dd> 		
    			<dt>Ip</dt>
-  			<dd><a href="@routes.AdminIps.show(domain.ip)">@domain.ip</a></dd> 
-   			<dt>Context</dt>
-  			<dd>@domain.context</dd>   
+  			<dd>
+       		@if(domain.ip != null) {
+       			<a href="@routes.AdminIps.show(domain.ip)">@domain.ip</a>
+       		} else {
+       			-
+       		}  			
+  			</dd>  
    			<dt>Nameserver</dt>
   			<dd>
   			@for(nameserver <- domain.getNameservers()) {
@@ -38,7 +42,13 @@
 			<tr>
 				<td>@rr.getName()</td>
 				<td>@rr.getType()</td>
-				<td><a href="@routes.AdminIps.show(rr.getValue())">@rr.getValue()</a></td>
+				<td>
+					@if(Ip.valid(rr.getValue())) {
+					<a href="@routes.AdminIps.show(rr.getValue())">@rr.getValue()</a>
+					} else {
+					@rr.getValue()
+					}
+				</td>
 				<td>@rr.getTtl()</td>
 				<td>@rr.getPref()</td>
 			</tr>

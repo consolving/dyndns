@@ -41,11 +41,10 @@ public class Domain extends Model {
 	public String ip;
 
 	public String nsAction;
-	public String context;
 
 	@Column(columnDefinition = "TEXT")
-	public String nameservers;
-	public String systemNs;
+	public String nameservers = "";
+	public String systemNs = "";
 	
 	public Boolean wwwInclude;
 	public Boolean forceUpdate = false;
@@ -96,7 +95,7 @@ public class Domain extends Model {
 	}
 	
 	public String[] getNameservers() {
-		return StringUtils.split(this.nameservers, "\n");
+		return nameservers != null ? StringUtils.split(this.nameservers, "\n") : new String[]{};
 	}
 	
 	public String getHostmaster() {
@@ -107,6 +106,14 @@ public class Domain extends Model {
 		return name;
 	}
 
+	public boolean checkName() {
+		return name != null && name.contains(".");
+	}
+	
+	public static boolean exists(Domain domain) {
+		return domain != null && domain.name != null && Find.where().eq("name", domain.name).findRowCount() > 0;
+	}
+	
 	public static Map<String, String> optionsFor(Account account) {
 		LinkedHashMap<String, String> domains = new LinkedHashMap<String, String>();
 		for (Domain d : Find.all()) {
