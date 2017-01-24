@@ -38,7 +38,9 @@
                 <tr>
                     <td class="word-break">@entry</td>
                     <td>@entry.apiKey</td>
-                    <td><a href="@routes.AdminIps.show(entry.updatedIp)">@entry.updatedIp</a><br /><a href="@routes.AdminIps.show(entry.actualIp)">@entry.actualIp</a></td>
+                    <td>
+                    	@if(entry.updatedIp != null && entry.actualIp != null){<a href="@routes.AdminIps.show(entry.updatedIp)">@entry.updatedIp</a><br /><a href="@routes.AdminIps.show(entry.actualIp)">@entry.actualIp</a>}
+                    </td>
                     <td>@entry.domain<br /><em>@entry.subDomain</em></td>	
                     <td>@entry.updated.since()</td>			
                     <td>
@@ -51,16 +53,12 @@
                             <option  @if(account.id == entry.account.id){ selected="selected"} value="@account.id">@account.username</option>
                             }
                         </select>
-                        <button class="btn btn-primary">Update</button>
+                        <button class="btn btn-primary btn-block">Update</button>
                 	} 
                     </td>
                     <td>
-                    @form(routes.AdminDynDNS.delete(entry.id)) {
-                    	<button class="btn btn-danger" type="submit">Delete</button>
-                    }
-					@form(routes.AdminDynDNS.resetApiKey(entry.id)) {
-                   		<button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-repeat"></span></button>
-              		}                
+                    @form(routes.AdminDynDNS.delete(entry.id)) { <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span></button> }
+					@form(routes.AdminDynDNS.resetApiKey(entry.id)) { <button class="btn btn-danger"><span class="glyphicon glyphicon-repeat"></span></button> }                
                     </td>
                 </tr>
                 }
