@@ -104,10 +104,12 @@ public class DnsInquireHelper {
 		if(zoneList.getLength() == 1) {
 			NodeList elements = zoneList.item(0).getChildNodes();
 			for(int i = 0; i < elements.getLength(); i++) {
+				Logger.debug("updatingMain - "+i+" "+elements.item(i).getTextContent());
 				switch(elements.item(i).getNodeName().toLowerCase()) {
 				case "main":
 					Node n = elements.item(i);
 					for(int j = 0; j < n.getChildNodes().getLength(); j++) {
+						Logger.debug("updatingMain - "+i+"."+j+" "+n.getTextContent());
 						if("value".equals( n.getChildNodes().item(j).getNodeName())) {
 							domain.ip = n.getChildNodes().item(0).getTextContent();
 						}						
@@ -126,6 +128,7 @@ public class DnsInquireHelper {
 			Node soa = soaList.item(0);			
 			NodeList elements =  soa.getChildNodes();
 			for(int j = 0; j < elements.getLength(); j++) {
+				Logger.debug("updatingSoa - "+j+" "+elements.item(j).getTextContent());
 				switch(elements.item(j).getNodeName().toLowerCase()) {
 				case "refresh":
 					domain.soaRefresh = getInteger(elements.item(j).getTextContent());
@@ -156,8 +159,10 @@ public class DnsInquireHelper {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < nsList.getLength(); i++) {
 			Node n = nsList.item(i);
+			Logger.debug("updatingNS - "+i+" "+n.getTextContent());
 			NodeList elements =  n.getChildNodes();
 			for(int j = 0; j < elements.getLength(); j++) {
+				Logger.debug("updatingMain - "+i+"."+j+" "+elements.item(j).getTextContent());
 				if("name".equals(elements.item(j).getNodeName().toLowerCase())) {
 					sb.append(elements.item(j).getTextContent().trim()).append("\n");									
 				}
@@ -177,6 +182,7 @@ public class DnsInquireHelper {
 		NodeList elements =  node.getChildNodes();
 		for(int i = 0; i < elements.getLength(); i++) {
 			Node n = elements.item(i);
+			Logger.debug("getRRFromNode - "+i+" "+n.getTextContent());
 			switch(n.getNodeName().toLowerCase()) {
 			case "name":
 				name = n.getTextContent();
