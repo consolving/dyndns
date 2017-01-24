@@ -11,17 +11,17 @@ create table account (
 
 create table dns_entry (
   id                        bigint auto_increment not null,
-  created                   timestamp,
-  changed                   timestamp,
-  updated                   timestamp,
-  updated6                  timestamp,
+  created                   datetime,
+  changed                   datetime,
+  updated                   datetime,
+  updated6                  datetime,
   updated_ip                varchar(255),
   actual_ip                 varchar(255),
   updated_ip6               varchar(255),
   actual_ip6                varchar(255),
   name                      varchar(255),
   api_key                   varchar(255),
-  to_delete                 boolean,
+  to_delete                 tinyint(1) default 0,
   account_id                bigint,
   domain_id                 bigint,
   sub_domain_id             bigint,
@@ -30,8 +30,8 @@ create table dns_entry (
 
 create table domain (
   id                        bigint auto_increment not null,
-  created                   timestamp,
-  updated                   timestamp,
+  created                   datetime,
+  updated                   datetime,
   name                      varchar(255),
   soa_email                 varchar(255),
   soa_refresh               integer,
@@ -43,9 +43,9 @@ create table domain (
   ns_action                 varchar(255),
   nameservers               TEXT,
   system_ns                 varchar(255),
-  www_include               boolean,
-  force_update              boolean,
-  domainsafe                boolean,
+  www_include               tinyint(1) default 0,
+  force_update              tinyint(1) default 0,
+  domainsafe                tinyint(1) default 0,
   constraint pk_domain primary key (id))
 ;
 
@@ -89,19 +89,19 @@ create index ix_sub_domain_domain_5 on sub_domain (domain_id);
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists account;
+drop table account;
 
-drop table if exists dns_entry;
+drop table dns_entry;
 
-drop table if exists domain;
+drop table domain;
 
-drop table if exists ip;
+drop table ip;
 
-drop table if exists resource_record;
+drop table resource_record;
 
-drop table if exists sub_domain;
+drop table sub_domain;
 
-SET REFERENTIAL_INTEGRITY TRUE;
+SET FOREIGN_KEY_CHECKS=1;
 

@@ -35,11 +35,11 @@ public class Ip extends Model {
 	}
 
 	public List<ResourceRecord> getResourceRecords() {
-		return ResourceRecord.Find.where().eq("value", this.value).order("name DESC").order("value DESC").order("pref ASC").findList();
+		return ResourceRecord.Find.where().eq("value", this.value).order("name ASC").order("value DESC").order("pref ASC").findList();
 	}
 
 	public List<Domain> getDomains() {
-		return Domain.Find.where().eq("ip", this.value).order("name DESC").findList();
+		return Domain.Find.where().eq("ip", this.value).order("name ASC").findList();
 	}
 	
 	public static Ip getOrCrate(String value) {

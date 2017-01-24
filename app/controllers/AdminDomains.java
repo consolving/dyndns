@@ -25,7 +25,7 @@ public class AdminDomains extends Controller {
 		if(!account.isAdmin()) {
 			return forbidden();
 		}
-		List<Domain> domains = Domain.Find.all();
+		List<Domain> domains = Domain.Find.order("name ASC").findList();
 		return ok(index.render(domains, DOMAIN_FORM));
 	}
 	
