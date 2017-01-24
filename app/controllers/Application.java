@@ -20,9 +20,11 @@ public class Application extends Controller {
 			
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());
-		List<DnsEntry> entries = account.dnsEntries;
+		List<DnsEntry> entries;
 		if (account.isAdmin()) {
-			entries = DnsEntry.Find.all();
+			entries = DnsEntry.Find.order("name ASC").findList();
+		} else {
+			entries = account.dnsEntries;
 		}
 		return ok(index.render(entries));
 	}

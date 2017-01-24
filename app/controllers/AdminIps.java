@@ -18,7 +18,7 @@ public class AdminIps extends Application {
 		if(!account.isAdmin()) {
 			return forbidden();
 		}		
-		List<Ip> ips = Ip.Find.all();
+		List<Ip> ips = Ip.Find.order("value ASC").findList();
 		return ok(index.render(ips));
 	}
 	

@@ -20,13 +20,13 @@ public class DynDns extends Application {
 
 	public static Result index() {
 		Account account = Account.geAccountOrCreate(request().username());
-		List<DnsEntry> entries = DnsEntry.Find.where().eq("account", account).eq("toDelete", false).findList();
+		List<DnsEntry> entries = DnsEntry.Find.where().eq("account", account).eq("toDelete", false).order("name ASC").findList();
 		return ok(index.render(entries, ENTRY_FORM));
 	}
 
 	public static Result hosts() {
 		Account account = Account.geAccountOrCreate(request().username());
-		List<DnsEntry> entries = DnsEntry.Find.where().eq("account", account).eq("toDelete", false).findList();
+		List<DnsEntry> entries = DnsEntry.Find.where().eq("account", account).eq("toDelete", false).order("name ASC").findList();
 		return ok(hosts.render(entries));		
 	}
 	

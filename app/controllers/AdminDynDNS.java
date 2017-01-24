@@ -20,8 +20,8 @@ public class AdminDynDNS extends Application {
 		if(!account.isAdmin()) {
 			return forbidden();
 		}
-		List<DnsEntry> entries = DnsEntry.Find.all();
-		List<Account> accounts = Account.Find.all();
+		List<DnsEntry> entries = DnsEntry.Find.order("name ASC").findList();
+		List<Account> accounts = Account.Find.order("username ASC").findList();
 		return ok(index.render(entries, accounts));
 	}
 
