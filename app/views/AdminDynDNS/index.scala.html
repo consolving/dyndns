@@ -37,12 +37,7 @@
                 @for(entry <- entries) {
                 <tr>
                     <td class="word-break">@entry</td>
-                    <td>
-                        <form method="post" action="@routes.AdminDynDNS.resetApiKey(entry.id)">
-                            @entry.apiKey
-                            <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-repeat"></span></button></form>
-                        </form>
-                    </td>
+                    <td>@entry.apiKey</td>
                     <td><a href="@routes.AdminIps.show(entry.updatedIp)">@entry.updatedIp</a><br /><a href="@routes.AdminIps.show(entry.actualIp)">@entry.actualIp</a></td>
                     <td>@entry.domain<br /><em>@entry.subDomain</em></td>	
                     <td>@entry.updated.since()</td>			
@@ -63,6 +58,9 @@
                     @form(routes.AdminDynDNS.delete(entry.id)) {
                     	<button class="btn btn-danger" type="submit">Delete</button>
                     }
+					@form(routes.AdminDynDNS.resetApiKey(entry.id)) {
+                   		<button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-repeat"></span></button>
+              		}                
                     </td>
                 </tr>
                 }
