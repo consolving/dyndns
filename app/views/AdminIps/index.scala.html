@@ -15,14 +15,20 @@
             <thead>
                 <tr>
                     <th>IP</th>
-                    <th>Type</th>                    
+                    <th>Type</th> 
+                    <th>Domains</th>                    
                 </tr>
             </thead>
             <tbody>
                 @for(ip <- ips){
                 <tr>
                     <td class="word-break"><a href="@routes.AdminIps.show(ip.getValue())">@ip.getValue()</a></td>  
-                    <td>@ip.getType()</td>                                   	                   	
+                    <td>@ip.getType()</td> 
+                    <td>
+                    @for(domain <- ip.getDomains()) {
+                    	<a href="@routes.AdminDomains.show(domain.id)">@domain.name</a> 
+                    }
+                    </td>                                  	                   	
                 </tr>
                 }
             </tbody> 
