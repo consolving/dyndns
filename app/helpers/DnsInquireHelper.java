@@ -97,8 +97,19 @@ public class DnsInquireHelper {
 			Node n = rrList.item(i);
 			newResourceRecords.add(getRRFromNode(n, domain));
 		}
+		cleanResourceRecords(oldResourceRecords, newResourceRecords);
 		return domain;
 	}
+	
+	private static void cleanResourceRecords(List<ResourceRecord> oldResourceRecords, List<ResourceRecord> newResourceRecords) {
+		for(ResourceRecord rr : oldResourceRecords) {
+			if(!newResourceRecords.contains(rr)) {
+				Logger.debug("removing RR: "+rr.name);
+				ResourceRecord.Find.byId(rr.id).delete();
+			}
+		}
+	}
+	
 	private static Domain updatingMain(Document doc, Domain domain) {
 		NodeList zoneList = doc.getElementsByTagName("zone");
 		if(zoneList.getLength() == 1) {
