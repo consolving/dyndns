@@ -34,18 +34,18 @@
             <tbody>
                 @for(domain <- domains) {
                 <tr>
-                    <td class="word-break"><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
+                    <td class="word-break"><a href="@routes.AdminDomains.show(domain.name)">@domain.name</a></td>
                    	<td>@domain.getHostmaster()</td>
                    	<td>
                    		@if(domain.ip != null) {
-                   			<a href="@routes.AdminIps.show(domain.ip)">@domain.ip</a>
+                   			<a href="@routes.AdminIps.show(domain.name)">@domain.ip</a>
                    		} else {
                    			-
                    		}
                    	</td>
                    	<td>@if(domain.forceUpdate){yes}</td>  
                    	<td>
-				 		@form(routes.AdminDomains.inquire(domain.id)) {
+				 		@form(routes.AdminDomains.inquire(domain.name)) {
 							<input type="submit" class="btn btn-primary btn-block" value="Inquire DNS" />
 				        }                   	
                    	</td>                 	                   	

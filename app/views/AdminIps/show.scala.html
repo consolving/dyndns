@@ -25,7 +25,7 @@
 			</tr>
 			@for(domain <- ip.getDomains()) {
 			<tr>
-				<td><a href="@routes.AdminDomains.show(domain.id)">@domain.name</a></td>
+				<td><a href="@routes.AdminDomains.show(domain.name)">@domain.name</a></td>
 				<td>@domain.getHostmaster()</td>
 			</tr>
 			}
@@ -46,7 +46,7 @@
 			<tr>
 				<td>@rr.getName()</td>
 				<td>@rr.getType()</td>
-				<th><a href="@routes.AdminDomains.show(rr.domain.id)">@rr.domain.name</a></th>
+				<th><a href="@routes.AdminDomains.show(rr.domain.name)">@rr.domain.name</a></th>
 				<td>@rr.getTtl()</td>
 				<td>@rr.getPref()</td>
 			</tr>

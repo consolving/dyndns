@@ -26,7 +26,7 @@
                     <td>@ip.getType()</td> 
                     <td>
                     @for(domain <- ip.getDomains()) {
-                    	<a href="@routes.AdminDomains.show(domain.id)">@domain.name</a> 
+                    	<a href="@routes.AdminDomains.show(domain.name)">@domain.name</a> 
                     }
                     </td>                                  	                   	
                 </tr>

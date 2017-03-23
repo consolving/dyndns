@@ -27,12 +27,18 @@ public class AdminDomains extends Controller {
 		return ok(index.render(domains, DOMAIN_FORM));
 	}
 	
-	public static Result show(Long id) {
+	public static Result show(String name) {
+		if(name == null || name.isEmpty()) {
+			return notFound();
+		}
 		Account account = Account.geAccountOrCreate(request().username());
 		if(!account.isAdmin()) {
 			return forbidden();
 		}
-		Domain domain = Domain.Find.byId(id);
+		Domain domain = Domain.Find.where().eq("name", name).findUnique();
+		if(domain == null) {
+			return notFound();
+		}
 		return ok(show.render(domain));
 	}
 	
@@ -54,12 +60,15 @@ public class AdminDomains extends Controller {
 		}
 	}
 	
-	public static Result inquire(Long id) {
+	public static Result inquire(String name) {
+		if(name == null || name.isEmpty()) {
+			return notFound();
+		}
 		Account account = Account.geAccountOrCreate(request().username());
 		if(!account.isAdmin()) {
 			return forbidden();
 		}	
-		Domain domain = Domain.Find.byId(id);
+		Domain domain = Domain.Find.where().eq("name", name).findUnique();
 		if(domain != null) {
 			DnsInquireJob job = new DnsInquireJob(domain);
 			job.run();
