@@ -1,6 +1,8 @@
 package helpers;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -106,12 +108,7 @@ public class DnsUpdateHelper {
 				+ "<ttl>"+NS_TTL+"</ttl>"
 				+ "</nserver>"
 				+ "<allow_transfer_from/>"
-				+ "<free/>"
-				+ "<rr>"
-				+ "<name>*</name>"
-				+ "<ttl>"+SUBDOMAIN_TTL+"</ttl>"
-				+ "<type>A</type>"
-				+ "<value>" + domain.ip + "</value>" + "</rr>";
+				+ "<free/>";
 	}
 
 	// TODO move string to template
@@ -147,12 +144,13 @@ public class DnsUpdateHelper {
 				.setHeader("Content-Type", "text/xml; charset=utf-8")
 				.post(content).map(new Function<WSResponse, Document>() {
 					public Document apply(WSResponse response) {
+						Logger.debug("response: "+response.getBody());
 						Document doc = response.asXml();
 						if (getUpdateStatus(doc)) {
 							Logger.info("@"+System.currentTimeMillis()+" updating "+domain.name+" success!");
 							updateEntries();
 						} else {
-							Logger.error("@"+System.currentTimeMillis()+" updating "+domain.name+" error:\n", doc.getTextContent());
+							Logger.error("@"+System.currentTimeMillis()+" updating "+domain.name+" error:\n", response.getBody());
 						}
 						return doc;
 					}
@@ -162,46 +160,68 @@ public class DnsUpdateHelper {
 		return fullName.replace("."+domainName, "").trim();
 	}
 	
+	private Map<Long, DnsEntry> getUpdates(Domain domain) {
+		Map<Long, DnsEntry> updates = new HashMap<>();
+		for(DnsEntry dnsEntry : domain.findNeedsToChanged()) {
+			ResourceRecord rr = ResourceRecord.getOrCreateFromDNSEntry(dnsEntry);
+			updates.put(rr.id, dnsEntry);
+		}
+		return updates;
+	}
+	
 	private String buildUpdateList() {
 		StringBuilder sb = new StringBuilder();
-		for (DnsEntry entry : domain.findValidEntries()) {
-			if(!entry.toDelete) {
-				ResourceRecord rr = ResourceRecord.getOrCreateFromDNSEntry(entry);
-				if(entry.updatedIp6 != null) {
-					sb.append("<rr>")
-					.append("<name>")
-					.append(entry.getSubdomainPart())
-					.append("</name>")
-					.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")	
-					.append("<type>AAAA</type>")
-					.append("<value>")
-					.append(entry.updatedIp6)
-					.append("</value>")
-					.append("</rr>");	
-					rr.value = entry.updatedIp6;
+		Map<Long, DnsEntry> updates = getUpdates(domain);
+		for(ResourceRecord rr : domain.getResourceRecords()) {
+			if(updates.containsKey(rr.id)) {
+				DnsEntry entry = updates.get(rr.id);
+				if(!entry.toDelete) {
+					if(entry.updatedIp6 != null) {
+						sb.append("<rr>")
+						.append("<name>")
+						.append(entry.getSubdomainPart())
+						.append("</name>")
+						.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")	
+						.append("<type>AAAA</type>")
+						.append("<value>")
+						.append(entry.updatedIp6)
+						.append("</value>")
+						.append("</rr>");	
+						rr.value = entry.updatedIp6;
+					}
+					if(entry.updatedIp != null) {
+						sb.append("<rr>")
+						.append("<name>")
+						.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
+						.append("</name>")
+						.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")							
+						.append("<type>A</type>")
+						.append("<value>")
+						.append(entry.updatedIp)
+						.append("</value>")
+						.append("</rr>");	
+						rr.value = entry.updatedIp;
+					}
+					rr.save();
+				} else {
+					if(rr != null) {
+						rr.delete();
+						Logger.info("@"+System.currentTimeMillis()+" deleted "+rr);
+					}
+					entry.delete();
+					Logger.info("@"+System.currentTimeMillis()+" deleted "+entry);
 				}
-				if(entry.updatedIp != null) {
-					sb.append("<rr>")
-					.append("<name>")
-					.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
-					.append("</name>")
-					.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")							
-					.append("<type>A</type>")
-					.append("<value>")
-					.append(entry.updatedIp)
-					.append("</value>")
-					.append("</rr>");	
-					rr.value = entry.updatedIp;
-				}
-				rr.save();
 			} else {
-				ResourceRecord rr = ResourceRecord.getOrCreateFromDNSEntry(entry);
-				if(rr != null) {
-					rr.delete();
-					Logger.info("@"+System.currentTimeMillis()+" deleted "+rr);
-				}
-				entry.delete();
-				Logger.info("@"+System.currentTimeMillis()+" deleted "+entry);
+				sb.append("<rr>")
+				.append("<name>")
+				.append(rr.name)
+				.append("</name>")
+				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")							
+				.append("<type>"+rr.type+"</type>")
+				.append("<value>")
+				.append(rr.value)
+				.append("</value>")
+				.append("</rr>");					
 			}
 		}
 		return sb.toString();
@@ -209,10 +229,20 @@ public class DnsUpdateHelper {
 
 	private boolean getUpdateStatus(Document doc) {
 		doc.getDocumentElement().normalize();
-		NodeList layerConfigList = doc.getElementsByTagName("type");
-		Node node = layerConfigList.item(0);
-		return node != null && node.getTextContent().toLowerCase().equals("success");
-	}
+		NodeList statusConfigList = doc.getElementsByTagName("status");
+		Node status = statusConfigList.getLength() > 0 ? statusConfigList.item(0) : null;
+		if(status == null) {
+			return false;
+		}
+		NodeList layerConfigList = status.getChildNodes();
+		for(int i = 0; i < layerConfigList.getLength(); i++) {
+			Node n = layerConfigList.item(i);
+			if( n.getTextContent().toLowerCase().equals("success") ) {
+				return true;
+			}
+		}
+		return false;
+	}	
 	
 	private static int parseInteger(String key, int fallback){
 		if(key != null && ConfigFactory.load().hasPath(key)){	

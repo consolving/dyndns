@@ -62,6 +62,14 @@ public class ResourceRecord extends Model {
 		return pref;
 	}
 	
+	public DnsEntry getDnsEntry() {	
+		return DnsEntry.Find.where().eq("name", name).eq("domain", domain).findUnique();
+	}
+	
+	public String toString() {
+		return name+" "+value+" "+ttl+" "+domain.toString();
+	}
+	
 	public static ResourceRecord getOrCreateFromDNSEntry(DnsEntry dnsEntry) {
 		String type, value;
 		if(dnsEntry.updatedIp != null ) {
@@ -75,10 +83,5 @@ public class ResourceRecord extends Model {
 		rr.value = value;
 		rr.save();
 		return rr;
-	}
-	
-	public String toString() {
-		return name+" "+value+" "+ttl+" "+domain.toString();
-	}
-	
+	}	
 }

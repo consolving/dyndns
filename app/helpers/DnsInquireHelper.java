@@ -230,7 +230,12 @@ public class DnsInquireHelper {
 	
 	private boolean getUpdateStatus(Document doc) {
 		doc.getDocumentElement().normalize();
-		NodeList layerConfigList = doc.getElementsByTagName("type");
+		NodeList statusConfigList = doc.getElementsByTagName("status");
+		Node status = statusConfigList.getLength() > 0 ? statusConfigList.item(0) : null;
+		if(status == null) {
+			return false;
+		}
+		NodeList layerConfigList = status.getChildNodes();
 		for(int i = 0; i < layerConfigList.getLength(); i++) {
 			Node n = layerConfigList.item(i);
 			if( n.getTextContent().toLowerCase().equals("success") ) {
