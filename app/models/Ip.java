@@ -60,13 +60,25 @@ public class Ip extends Model {
 	}
 	
 	public static boolean valid(String value) {
+		return validIpv4(value) || validIpv6(value);
+	}
+	
+	public static boolean validIpv4(String value) {
 		if(value != null)  {
 			String v = value.trim();
 			Matcher matcher;
 			matcher = IPV4_PATTERN.matcher(v);
 			if(matcher.matches()) {
 				return true;
-			}
+			}		
+		}
+		return false;
+	}
+
+	public static boolean validIpv6(String value) {
+		if(value != null)  {
+			String v = value.trim();
+			Matcher matcher;
 			matcher = IPV6_STD_PATTERN.matcher(v);
 			if(matcher.matches()) {
 				return true;
@@ -76,6 +88,7 @@ public class Ip extends Model {
 				return true;
 			}		
 		}
-		return false;
+		return false;		
 	}
+	
 }

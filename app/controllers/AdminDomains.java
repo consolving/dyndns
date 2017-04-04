@@ -8,6 +8,7 @@ import fileauth.actions.BasicAuth;
 import jobs.DnsInquireJob;
 import models.Account;
 import models.Domain;
+import models.ResourceRecord;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -39,7 +40,7 @@ public class AdminDomains extends Controller {
 		if(domain == null) {
 			return notFound();
 		}
-		return ok(show.render(domain));
+		return ok(show.render(domain, ResourceRecord.RECORD_FORM));
 	}
 	
 	public static Result save() {

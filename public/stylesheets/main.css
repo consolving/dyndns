@@ -30,3 +30,9 @@ body {
 table {
     table-layout: fixed;
 }
+
+table.resourcerecords td {
+	word-wrap: break-word;
+	min-width: 400px;
+	max-width: 400px;
+}
