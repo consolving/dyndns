@@ -28,3 +28,4 @@ conf/initial-data.yml
 
 conf/application.conf
 .idea
+.history
