@@ -7,9 +7,6 @@
 package controllers;
 
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.kenshoo.play.metrics.MetricsRegistry;
 
 import models.DnsEntry;
