@@ -5,7 +5,6 @@ import java.util.List;
 import fileauth.actions.BasicAuth;
 import models.Account;
 import models.Ip;
-import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.AdminIps.index;
 import views.html.AdminIps.show;
