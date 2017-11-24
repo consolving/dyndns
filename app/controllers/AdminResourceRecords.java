@@ -1,18 +1,14 @@
 package controllers;
 
-import java.util.List;
-
 import fileauth.actions.BasicAuth;
 import helpers.DnsInquireHelper;
 import helpers.DnsUpdateHelper;
 import models.Account;
-import models.DnsEntry;
 import models.Domain;
 import models.ResourceRecord;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Result;
-import views.html.DynDns.index;
 import views.html.AdminDomains.show;
 import views.html.AdminResourceRecords.edit;
 
@@ -42,7 +38,12 @@ public class AdminResourceRecords extends Application {
 			rr.ttl = 3600;
 		}
 		Logger.debug("got: "+rr.toString());
-		rr.save();
+		if(rr.id != null) {
+			rr.update();
+		} else {
+			rr.save();			
+		}
+		
 		domain.forceUpdate = true;
 		domain.save();
 		

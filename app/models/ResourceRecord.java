@@ -89,7 +89,7 @@ public class ResourceRecord extends Model {
     }
     
 	public String toString() {
-		return name+" "+type+" "+value+" "+ttl+" "+domain.toString();
+		return id+" "+name+" "+type+" "+value+" "+ttl+" "+domain.toString();
 	}
 	
 	public static ResourceRecord getOrCreateFromDNSEntry(DnsEntry dnsEntry) {
