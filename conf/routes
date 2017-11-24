@@ -14,6 +14,7 @@ GET		/update/:k					    		controllers.DnsUpdate.updateIp(k: String, ip: String)
 POST	/update/:k					    		controllers.DnsUpdate.updateIp(k: String, ip: String)
 
 
+POST	/admin/domains/:name/rrs/:id/edit		controllers.AdminResourceRecords.edit(name: String, id: Long)
 POST	/admin/domains/:name/rrs/:id/delete		controllers.AdminResourceRecords.delete(name: String, id: Long)
 POST	/admin/domains/:name/rrs				controllers.AdminResourceRecords.save(name: String)
 GET		/admin/domains				    		controllers.AdminDomains.index()

@@ -3,6 +3,8 @@ package controllers;
 import java.util.List;
 
 import fileauth.actions.BasicAuth;
+import helpers.DnsInquireHelper;
+import helpers.DnsUpdateHelper;
 import models.Account;
 import models.DnsEntry;
 import models.Domain;
@@ -12,6 +14,7 @@ import play.data.Form;
 import play.mvc.Result;
 import views.html.DynDns.index;
 import views.html.AdminDomains.show;
+import views.html.AdminResourceRecords.edit;
 
 @BasicAuth
 public class AdminResourceRecords extends Application {
@@ -42,7 +45,27 @@ public class AdminResourceRecords extends Application {
 		rr.save();
 		domain.forceUpdate = true;
 		domain.save();
+		
+		new DnsUpdateHelper(domain).update();
+		new DnsInquireHelper(domain).inquire();
+		
 		return redirect(routes.AdminDomains.show(domain.name));	
+	}
+	
+	public static Result edit(String name, Long id) {
+		if(name == null || name.isEmpty()) {
+			return notFound();
+		}		
+		Account account = Account.geAccountOrCreate(request().username());
+		if(!account.isAdmin()) {
+			return forbidden();
+		}	
+		Domain domain = Domain.Find.where().eq("name", name).findUnique();
+		if(domain == null) {
+			return notFound();
+		}	
+		ResourceRecord rr = ResourceRecord.Find.byId(id);
+		return ok(edit.render(domain, rr, ResourceRecord.RECORD_FORM));		
 	}
 	
 	public static Result delete(String name, Long id) {

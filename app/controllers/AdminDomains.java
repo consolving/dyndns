@@ -5,6 +5,8 @@ import static play.data.Form.form;
 import java.util.List;
 
 import fileauth.actions.BasicAuth;
+import helpers.DnsInquireHelper;
+import helpers.DnsUpdateHelper;
 import jobs.DnsInquireJob;
 import models.Account;
 import models.Domain;
@@ -57,6 +59,9 @@ public class AdminDomains extends Controller {
 			if (domain != null && !Domain.exists(domain) && domain.checkName()) {
 				domain.save();
 			}
+			new DnsUpdateHelper(domain).update();
+			new DnsInquireHelper(domain).inquire();
+			
 			return redirect(routes.AdminDomains.index());
 		}
 	}

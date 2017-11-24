@@ -20,8 +20,8 @@ public class DnsUpdateJob implements Runnable {
 		DnsUpdateJob job = new DnsUpdateJob();
 		Akka.system().scheduler().schedule(Duration.create(500, TimeUnit.MILLISECONDS), // initial
 																						// delay
-				Duration.create(1, TimeUnit.MINUTES), // run job every 1 minutes
-				job, Akka.system().dispatcher());
+		Duration.create(1, TimeUnit.MINUTES), // run job every 1 minutes
+		job, Akka.system().dispatcher());
 	}
 
 	@Override
