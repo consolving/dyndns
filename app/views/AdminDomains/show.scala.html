@@ -97,14 +97,14 @@
 				<td>@rr.getTtl()</td>
 				<td>@rr.getPref()</td>
 				<td>
-				<div class="btn-group">
 				@form(routes.AdminResourceRecords.delete(domain.name, rr.id)) {
+					<div class="btn-group">
     	    				<button onClick="if (!confirm('Are you sure, you want to delete this?\n')) return false;" type="submit" class="btn btn-danger">Delete</button>					
+					<a href="@routes.AdminResourceRecords.edit(domain.name, rr.id)" class="btn btn-primary">
+						Edit
+					</a>
+					</div>	
 				}
-				<a href="@routes.AdminResourceRecords.edit(domain.name, rr.id)" class="btn btn-primary">
-					Edit
-				</a>
-				</div>
 				</td>				
 			</tr>
 			}
