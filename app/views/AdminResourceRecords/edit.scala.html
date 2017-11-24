@@ -34,15 +34,15 @@
 			@form(routes.AdminResourceRecords.save(domain.name)) {
 			<tr>
 				<th>
-				@inputText(
-	                resourceForm("name"), 
-	                '_label -> "Name",
-	                '_showConstraints -> false,
-	                'value-> record.name
-            		)					
+					<dl id="type_field">
+						<dt><label for="name">Name</label></dt>
+					    <dd>
+					    	<input name="name" id="name" type="text" value="@record.getName()" />
+					    </dd>
+					</dl>				
 				</th>
 				<th>
-					<dl class=" " id="type_field">
+					<dl id="type_field">
 						<dt><label for="type">Type</label></dt>
 					    <dd>
 						<select id="type" name="type">
@@ -54,31 +54,28 @@
 					</dl>		
 				</th>
 				<th>
-				@inputText(
-	                resourceForm("value"), 
-	                '_label -> "Value",
-	                '_showConstraints -> false,
-	                'size -> 25,
-	                'value-> record.getValue()
-            		)				
+					<dl id="type_field">
+						<dt><label for="name">Value</label></dt>
+					    <dd>
+					    	<input size="25" name="value" id="value" type="text" value="@record.getValue()" />
+					    </dd>
+					</dl>
 				</th>
 				<th>
-				@inputText(
-	                resourceForm("ttl"), 
-	                '_label -> "TTL",
-	                '_showConstraints -> false,
-	                'size -> 4,
-	                'value-> record.getTtl()
-            		)					
+					<dl id="type_field">
+						<dt><label for="name">TTL</label></dt>
+					    <dd>
+					    	<input size="4" name="ttl" id="ttl" type="text" value="@record.getTtl()" />
+					    </dd>
+					</dl>							
 				</th>
 				<th>
-				@inputText(
-	                resourceForm("pref"), 
-	                '_label -> "Pref",
-	                '_showConstraints -> false,
-	                'size -> 4,
-	                'value-> record.getPref()
-            		)				
+					<dl id="type_field">
+						<dt><label for="name">Pref</label></dt>
+					    <dd>
+					    	<input size="4" name="pref" id="pref" type="text" value="@record.getPref()" />
+					    </dd>
+					</dl>			
 				</th>
 				<th>
 					&nbsp;<br />
