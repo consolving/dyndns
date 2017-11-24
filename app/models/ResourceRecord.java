@@ -79,12 +79,12 @@ public class ResourceRecord extends Model {
 	
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<ValidationError>();
-    	if("AAAA".equals(type) && !Ip.validIpv6(value)) {
-    		errors.add(new ValidationError("value", value+" is not a valid IPv6!"));
-    	}
-    	if("A".equals(type) && !Ip.validIpv4(value)) {
-    		errors.add(new ValidationError("value", value+" is not a valid IPv4!"));
-    	}         
+	    	if("AAAA".equals(type) && !Ip.validIpv6(value)) {
+	    		errors.add(new ValidationError("value", value+" is not a valid IPv6!"));
+	    	}
+	    	if("A".equals(type) && !Ip.validIpv4(value)) {
+	    		errors.add(new ValidationError("value", value+" is not a valid IPv4!"));
+	    	}         
         return errors.isEmpty() ? null : errors;
     }
     
