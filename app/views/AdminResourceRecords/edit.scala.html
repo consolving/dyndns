@@ -1,6 +1,6 @@
 @import views.addons._
 @import helper._
-@(domain: Domain, rr: ResourceRecord, resourceForm: Form[ResourceRecord])
+@(domain: Domain, record: ResourceRecord, resourceForm: Form[ResourceRecord])
 
 @main("DYD - Domains") {
 <div class="row">
@@ -38,15 +38,20 @@
 	                resourceForm("name"), 
 	                '_label -> "Name",
 	                '_showConstraints -> false,
-	                'value-> rr.name
+	                'value-> record.name
             		)					
 				</th>
 				<th>
-					<select id="type" name="type">
-						@for(t <- ResourceRecord.options().keySet()) {
-						<option value="@t" @if(t.equals(rr.getType())){ selected="selected" }>@t</option>
-						}
-					</select>			
+					<dl class=" " id="type_field">
+						<dt><label for="type">Type</label></dt>
+					    <dd>
+						<select id="type" name="type">
+							@for(t <- ResourceRecord.options().keySet()) {
+							<option value="@t" @if(t.equals(record.getType())){ selected="selected" }>@t</option>
+							}
+						</select>
+						</dd>
+					</dl>		
 				</th>
 				<th>
 				@inputText(
@@ -54,7 +59,7 @@
 	                '_label -> "Value",
 	                '_showConstraints -> false,
 	                'size -> 25,
-	                'value-> rr.value
+	                'value-> record.value
             		)				
 				</th>
 				<th>
@@ -63,7 +68,7 @@
 	                '_label -> "TTL",
 	                '_showConstraints -> false,
 	                'size -> 4,
-	                'value-> rr.ttl
+	                'value-> record.ttl
             		)					
 				</th>
 				<th>
@@ -72,13 +77,14 @@
 	                '_label -> "Pref",
 	                '_showConstraints -> false,
 	                'size -> 4,
-	                'value-> rr.pref
+	                'value-> record.pref
             		)				
 				</th>
 				<th>
 					&nbsp;<br />
 					<input type="hidden" name="domain.id" id="domain.id" value="@domain.id" />
-					<input type="submit" class="btn btn-primary" value="Add" />
+					<input type="submit" class="btn btn-primary" value="Save" />
+					<a href="@routes.AdminDomains.show(domain.name) class="btn btn-default"">Cancel</a>
 				</th>
 			</tr>
 			}
@@ -97,7 +103,7 @@
 				<td>@rr.getPref()</td>
 				<td>
 				@form(routes.AdminResourceRecords.delete(domain.name, rr.id)) {
-    	    		<button onClick="if (!confirm('Are you sure, you want to delete this?\n')) return false;" type="submit" class="btn btn-danger">Delete</button>					
+    	    				<button onClick="if (!confirm('Are you sure, you want to delete this?\n')) return false;" type="submit" class="btn btn-danger">Delete</button>					
 				}
 				</td>				
 			</tr>
