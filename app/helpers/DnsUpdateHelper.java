@@ -181,7 +181,7 @@ public class DnsUpdateHelper {
 						.append("<name>")
 						.append(entry.getSubdomainPart())
 						.append("</name>")
-						.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")	
+						.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")
 						.append("<type>AAAA</type>")
 						.append("<value>")
 						.append(entry.updatedIp6)
@@ -194,7 +194,7 @@ public class DnsUpdateHelper {
 						.append("<name>")
 						.append(getCName(entry.name+"."+entry.subDomain.name, entry.domain.name))
 						.append("</name>")
-						.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")							
+						.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")
 						.append("<type>A</type>")
 						.append("<value>")
 						.append(entry.updatedIp)
@@ -211,17 +211,17 @@ public class DnsUpdateHelper {
 					entry.delete();
 					Logger.info("@"+System.currentTimeMillis()+" deleted "+entry);
 				}
-			} else {
+			} else if(rr.value != null) {
 				sb.append("<rr>")
 				.append("<name>")
 				.append(rr.name)
 				.append("</name>")
-				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")							
+				.append("<ttl>"+SUBDOMAIN_TTL+"</ttl>")
 				.append("<type>"+rr.type+"</type>")
 				.append("<value>")
 				.append(rr.value)
 				.append("</value>")
-				.append("</rr>");					
+				.append("</rr>");
 			}
 		}
 		return sb.toString();
